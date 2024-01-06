@@ -1,0 +1,9 @@
+export const MATCHES_MODAL = "matches_modal";
+export const SET_ALLIANCE_COLOR = "set_alliance_color";
+export const SET_EVENT = "set_event";
+export const SET_MATCHES = "set_matches";
+export const SET_CURRENT_EVENT_KEY = "set_current_event_key";
+export const SET_CURRENT_MATCH = "set_current_match";
+export const SET_FIELD_ORIENTATION = "set_field_orientation";
+export const SET_CURRENT_MATCH_DATA = "set_current_match_data";
+export const SET_TELEOP_MODAL = "set_teleop_modal";
