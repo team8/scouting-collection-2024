@@ -51,14 +51,6 @@ function Prematch(props) {
         } else {
           setFieldOrientation(1);
         }
-        // if (currentRobotPosition == 1) {
-        //     var lkey = 3;
-        // } else if (currentRobotPosition == 3) {
-        //     var lkey = 1
-        // } else {
-        //     var lkey = 2;
-        // }
-        // setPosition(lkey, currentRobotPositionName);
     }
     
     const navigate = () => {
@@ -85,7 +77,7 @@ function Prematch(props) {
              <View style={prematchStyles.InputContainer}>
                 <View style={prematchStyles.Row}>
                     <TextInput
-                        style={[prematchStyles.Font, { borderBottomWidth: 3, borderBottomColor: '#d4d4d4', flex: 0.7,}]}
+                        style={[prematchStyles.Font, { borderBottomWidth: 3, borderBottomColor: '#d4d4d4', flex: 1,}]}
                         placeholder="Scouter Name, Ex: Buca Depepo"
                         onChangeText={(text) => setName(text)}
                     />
@@ -99,7 +91,7 @@ function Prematch(props) {
                 </View>
              </View>
              <View style={[prematchStyles.FieldContainer, prematchStyles.Row]}>
-                <View style={{ flex: 0.8, borderWidth: 4, borderColor: '#d4d4d4', height: "110%" }}>
+                <View style={{ flex: 0.56, borderWidth: 4, borderColor: '#d4d4d4', height: "120%" }}>
                     <ImageBackground style={prematchStyles.Field} source={fieldImages[fieldOrientation][alliance]}>
                         {startingPositionSettings.map((pos, i) => (
                                 <TouchableOpacity
@@ -113,8 +105,8 @@ function Prematch(props) {
                             ))}
                     </ImageBackground>
                 </View>
-                <View style={{ flex: 0.3, marginLeft: 30, marginBottom: -50 }}>
-                    <View style={{ flex: 0.7 }}>
+                <View style={{ flex: 0.4, marginLeft: 50, marginBottom: -50}}>
+                    <View style={{ flex: 0.7, alignItems: 'center' }}>
                         <Text style={[prematchStyles.Font, { fontWeight: 'bold' }]}>Starting Position</Text>
                         <Text style={[prematchStyles.Font, { fontSize: 18 }, currentRobotPosition == '' ? { color: '#a3a3a3' } : {}]}>{currentRobotPositionName}</Text>
                     </View>
