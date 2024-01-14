@@ -8,18 +8,18 @@ import { useNavigation } from '@react-navigation/native';
 
 function Postmatch(props) {
     const [notes, setNotes] = useState("");
-    const [chargeNotes, setChargeNotes] = useState("");
+    const [climbNotes, setClimbNotes] = useState("");
     const [robotDied, setRobotDied] = useState(false);
     const [robotTipped, setRobotTipped] = useState(false);
-    const [charge, setCharge] = useState(0);
+    const [climb, setClimb] = useState(0);
     const [driverRating, setDriverRating] = useState(0);
     const [defenseRating, setDefenseRating] = useState(0);
-    const [cubeIntakeRating, setCubeIntakeRating] = useState(0);
-    const [coneIntakeRating, setConeIntakeRating] = useState(0);
+    const [speakerOuttakeRating, setSpeakerOuttakeRating] = useState(0);
+    const [ampOuttakeRating, setAmpOuttakeRating] = useState(0);
 
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
-    const endGameText = ["N/A", "Parked", "Docked", "Engaged"];
+    const endGameText = ["N/A", "Parked", "Onstage", "Onstage (Spotlit)"];
 
     const navigation = useNavigation(); 
 
@@ -29,24 +29,24 @@ function Postmatch(props) {
         })
     })
 
-    const updateCharge = (index) => {
-        setCharge(index);
+    const updateClimb = (index) => {
+        setClimb(index);
     }
 
     const compile_data = () => {
-        if (notes == "" || chargeNotes == "") {
+        if (notes == "" || climbNotes == "") {
             alert("Please fill in all the notes.");
             return;
         }
         matchData.notes = notes.replace(/ /g, '>').replace(/,/g, '<');
-        matchData.chargeNotes = chargeNotes.replace(/ /g, '>').replace(/,/g, '<');
+        matchData.climbNotes = climbNotes.replace(/ /g, '>').replace(/,/g, '<');
         matchData.died = robotDied;
-        matchData.endgameChargeStation = endGameText[charge];
+        matchData.endgameClimb = endGameText[climb];
         matchData.tipped = robotTipped;
         matchData.driverRating = driverRating;
         matchData.defenseRating = defenseRating;
-        matchData.cubeIntakeRating = cubeIntakeRating;
-        matchData.coneIntakeRating = coneIntakeRating;
+        matchData.speakerOuttakeRating = speakerOuttakeRating;
+        matchData.ampOuttakeRating = ampOuttakeRating;
         props.setCurrentMatchData(matchData);
         navigation.navigate("qrcode");
     }
@@ -58,7 +58,7 @@ function Postmatch(props) {
                 <View style={[postmatchStyles.InputContainer, {flex: 0.9}]}>
                     <TextInput
                         style={postmatchStyles.TextInputContainer}
-                        placeholder="Topics to Note: Ease of intaking game pieces, speed of cycles, unique aspects of robot (good or bad), etc.. Max Char: 200"
+                        placeholder="Topics to Note: Ease of intaking game pieces, speed of cycles, unique aspects of robot (good or bad), where robot shot speaker notes from, etc.. Max Char: 200"
                         multiline={true}
                         maxLength = {200}
                         onChangeText={(text) => setNotes(text)}
@@ -66,14 +66,14 @@ function Postmatch(props) {
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.Font, {fontSize: 22, flex: 0.15}]}>Charge Notes</Text>
+                <Text style={[postmatchStyles.Font, {fontSize: 22, flex: 0.15}]}>Climb Notes</Text>
                 <View style={[postmatchStyles.InputContainer, {flex: 0.65}]}>
                     <TextInput
                         style={postmatchStyles.TextInputContainer}
                         placeholder="Topics to Note: Time at which robot began climbing, ease of assisted climb, why robot failed, etc.. Max Char: 150"
                         multiline={true}
                         maxLength = {150}
-                        onChangeText={(text) => setChargeNotes(text)}
+                        onChangeText={(text) => setClimbNotes(text)}
                     />
                 </View>
                 <View style={{flex: 0.1, marginLeft: 25}}>
@@ -90,18 +90,6 @@ function Postmatch(props) {
                         style={{flex: 0.7}}
                         onValueChange = {(value) => setRobotTipped(value)}
                         value={robotTipped}
-                    />
-                </View>
-            </View>
-            <View style={[postmatchStyles.Row, {marginTop: 10}]}>
-                <View style={{flex: 1}}>
-                <ButtonGroup 
-                    onPress={updateCharge}
-                    selectedIndex={charge}
-                    buttons={endGameText}
-                    buttonStyle={postmatchStyles.ButtonGroup}
-                    containerStyle={{height: 50}}
-                    selectedButtonStyle={{backgroundColor: '#24a2b6', borderBottomColor: '#188191'}}
                     />
                 </View>
             </View>
@@ -126,21 +114,21 @@ function Postmatch(props) {
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Cube Intake</Text>
+                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Speaker Outtake</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
-                        value={cubeIntakeRating}
-                        onValueChange={(intakeRating) => setCubeIntakeRating(intakeRating)} />
-                    <Text>{Math.round(cubeIntakeRating*6)-1 == -1 ? 'N/a' : Math.round(cubeIntakeRating*6)-1}</Text>
+                        value={speakerOuttakeRating}
+                        onValueChange={(intakeRating) => setSpeakerOuttakeRating(intakeRating)} />
+                    <Text>{Math.round(speakerOuttakeRating*6)-1 == -1 ? 'N/a' : Math.round(speakerOuttakeRating*6)-1}</Text>
                 </View>
-                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Cone Intake</Text>
+                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Amp Outtake</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
-                        value={coneIntakeRating}
-                        onValueChange={(intakeRating) => setConeIntakeRating(intakeRating)} />
-                    <Text>{Math.round(coneIntakeRating*6)-1 == -1 ? 'N/a' : Math.round(coneIntakeRating*6)-1}</Text>
+                        value={ampOuttakeRating}
+                        onValueChange={(intakeRating) => setAmpOuttakeRating(intakeRating)} />
+                    <Text>{Math.round(ampOuttakeRating*6)-1 == -1 ? 'N/a' : Math.round(ampOuttakeRating*6)-1}</Text>
                 </View>
             </View>
             <View style={[postmatchStyles.Row, {height: 100 }]}>
