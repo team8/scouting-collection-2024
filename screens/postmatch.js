@@ -11,11 +11,10 @@ function Postmatch(props) {
     const [climbNotes, setClimbNotes] = useState("");
     const [robotDied, setRobotDied] = useState(false);
     const [robotTipped, setRobotTipped] = useState(false);
-    const [climb, setClimb] = useState(0);
     const [driverRating, setDriverRating] = useState(0);
     const [defenseRating, setDefenseRating] = useState(0);
-    const [speakerOuttakeRating, setSpeakerOuttakeRating] = useState(0);
-    const [ampOuttakeRating, setAmpOuttakeRating] = useState(0);
+    const [intakeRating, setIntakeRating] = useState(0);
+    const [climbRating, setClimbRating] = useState(0);
 
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
@@ -41,12 +40,11 @@ function Postmatch(props) {
         matchData.notes = notes.replace(/ /g, '>').replace(/,/g, '<');
         matchData.climbNotes = climbNotes.replace(/ /g, '>').replace(/,/g, '<');
         matchData.died = robotDied;
-        matchData.endgameClimb = endGameText[climb];
         matchData.tipped = robotTipped;
         matchData.driverRating = driverRating;
         matchData.defenseRating = defenseRating;
-        matchData.speakerOuttakeRating = speakerOuttakeRating;
-        matchData.ampOuttakeRating = ampOuttakeRating;
+        matchData.intakeRating = intakeRating;
+        matchData.climbRating = climbRating;
         props.setCurrentMatchData(matchData);
         navigation.navigate("qrcode");
     }
@@ -94,7 +92,7 @@ function Postmatch(props) {
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Driving</Text>
+                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, textAlign: "center"}]}>Driving</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
@@ -103,7 +101,7 @@ function Postmatch(props) {
                     />
                     <Text>{Math.round(driverRating*5)}</Text>
                 </View>
-                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Defense</Text>
+                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, marginLeft: 5, textAlign: "center"}]}>Defense</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
@@ -114,21 +112,21 @@ function Postmatch(props) {
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Speaker Outtake</Text>
+                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, textAlign: "center"}]}>Intake</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
-                        value={speakerOuttakeRating}
-                        onValueChange={(intakeRating) => setSpeakerOuttakeRating(intakeRating)} />
-                    <Text>{Math.round(speakerOuttakeRating*6)-1 == -1 ? 'N/a' : Math.round(speakerOuttakeRating*6)-1}</Text>
+                        value={intakeRating}
+                        onValueChange={(intakeRating) => setIntakeRating(intakeRating)} />
+                    <Text>{Math.round(intakeRating*6)-1 == -1 ? 'N/a' : Math.round(intakeRating*6)-1}</Text>
                 </View>
-                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1}]}>Amp Outtake</Text>
+                <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, marginLeft: 5, textAlign: "center"}]} textAlign = "center">Climb</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
-                        value={ampOuttakeRating}
-                        onValueChange={(intakeRating) => setAmpOuttakeRating(intakeRating)} />
-                    <Text>{Math.round(ampOuttakeRating*6)-1 == -1 ? 'N/a' : Math.round(ampOuttakeRating*6)-1}</Text>
+                        value={climbRating}
+                        onValueChange={(intakeRating) => setClimbRating(intakeRating)} />
+                    <Text>{Math.round(climbRating*6)-1 == -1 ? 'N/a' : Math.round(climbRating*6)-1}</Text>
                 </View>
             </View>
             <View style={[postmatchStyles.Row, {height: 100 }]}>
@@ -159,7 +157,7 @@ const postmatchStyles = StyleSheet.create({
         borderColor: '#d4d4d4',
     },
     LabelText: {
-        marginLeft: 10
+        marginLeft: 5
     },
     NextButton: {
         flex: 1,
