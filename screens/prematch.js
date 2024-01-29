@@ -46,13 +46,10 @@ function Prematch(props) {
     }
 
     const toggleFieldOrientation = () => {
-        if (fieldOrientation === 1) {
-          setFieldOrientation(2);
-        } else {
-          setFieldOrientation(1);
-        }
+        setFieldOrientation(1+Number(!(fieldOrientation-1))); 
+        //minus 1, so it should be 1 or 0, switch from 1->0 or 0->1 via "not" operator, add 1 again
     }
-    
+
     const navigate = () => {
         if (!name || !currentRobotPosition) {
             alert("Please fill in all the information before proceeding.");

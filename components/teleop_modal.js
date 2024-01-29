@@ -30,29 +30,29 @@ function TeleopModal(props) {
                         <View style={{ padding: 10, alignItems: "center", justifyContent: "center", marginRight: 100 }}>
                             <TouchableOpacity style={autoStyles.ScoreButtonCube} onPress={() => addIntakeLocation("single_substation_cube")}>
                                 <Text style={autoStyles.ButtonFont}>Single Substation</Text>
-                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />
+                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                             </TouchableOpacity>
                             <TouchableOpacity style={autoStyles.ScoreButtonCube} onPress={() => addIntakeLocation("double_substation_cube")}>
                                 <Text style={autoStyles.ButtonFont}>Double Substation</Text>
-                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />
+                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                             </TouchableOpacity>
                             <TouchableOpacity style={autoStyles.ScoreButtonCube} onPress={() => addIntakeLocation("ground_cube")}>
                                 <Text style={autoStyles.ButtonFont}>Ground Substation</Text>
-                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />
+                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ padding: 10, alignItems: "center", justifyContent: "center" }}>
                             <TouchableOpacity style={autoStyles.ScoreButtonCone} onPress={() => addIntakeLocation("single_substation_cone")}>
                                 <Text style={autoStyles.ButtonFont}>Single Substation</Text>
-                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />
+                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                             </TouchableOpacity>
                             <TouchableOpacity style={autoStyles.ScoreButtonCone} onPress={() =>addIntakeLocation("double_substation_cone")}>
                                 <Text style={autoStyles.ButtonFont}>Double Substation</Text>
-                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />
+                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                             </TouchableOpacity>
                             <TouchableOpacity style={autoStyles.ScoreButtonCone} onPress={() => addIntakeLocation("ground_cone")}>
                                 <Text style={autoStyles.ButtonFont}>Ground Substation</Text>
-                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />
+                                <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                             </TouchableOpacity>
                         </View>
                     </View>

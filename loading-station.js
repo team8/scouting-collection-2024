@@ -1,6 +1,6 @@
-const loadingStationImages = {
-    blue: require("./assets/field_drawings/loading-station-blue.png"),
-    red: require("./assets/field_drawings/loading-station-red.png"),
+const outtakeImages = {
+    blue: require("./assets/field_drawings/outtake-blue.png"),
+    red: require("./assets/field_drawings/outtake-red.png"),
 };
 
-export default loadingStationImages;
+export default outtakeImages;

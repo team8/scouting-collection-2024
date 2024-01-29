@@ -4,55 +4,35 @@ import {
   Text,
   ImageBackground,
   StyleSheet,
-  Animated,
   TouchableOpacity,
-  Image,
   Switch,
-  Modal
 } from "react-native";
 import { connect } from "react-redux";
 import * as Types from "../store/types";
 import Blink from "../components/blink";
-import GridSuccessModal from "../components/gridSuccessModal";
 import { useNavigation } from '@react-navigation/native';
-import loadingStationImages from "../loading-station";
-import { Button, ButtonGroup } from 'react-native-elements';
+import outtakeImages from "../outtake-images";
+import ShotSuccessModal from '../components/shotSuccessModal';
 
 
 function Auto(props) {
-  const [grid, setGrid] = useState([
-    [{type: "Cone", placements: []}, {type: "Cone", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cube", placements: []}, {type: "Cube", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cone", placements: []}, {type: "Cone", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cone", placements: []}, {type: "Cone", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cube", placements: []}, {type: "Cube", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cone", placements: []}, {type: "Cone", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cone", placements: []}, {type: "Cone", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cube", placements: []}, {type: "Cube", placements: []}, {type: "Hybrid", placements: []}],
-    [{type: "Cone", placements: []}, {type: "Cone", placements: []}, {type: "Hybrid", placements: []}]
-  ]);
-  const [totalCones, setTotalCones] = useState(0);
-  const [totalCubes, setTotalCubes] = useState(0);
+  const [speakerNotes, setSpeakerNotes] = useState(0);
+  const [ampNotes, setAmpNotes] = useState(0);
 
-  const [upperFailedCones, setUpperFailedCones] = useState(0);
-  const [upperFailedCubes, setUpperFailedCubes] = useState(0);
-  const [midFailedCones, setMidFailedCones] = useState(0);
-  const [midFailedCubes, setMidFailedCubes] = useState(0);
+  const [failedSpeakerNotes, setFailedSpeakerNotes] = useState(0);
+  const [failedAmpNotes, setFailedAmpNotes] = useState(0);
 
-  const [chargeStation, setChargeStation] = useState(-1);
   const [mobility, setMobility] = useState(false);
 
-  const [gridModalVisible, setGridModalVisible] = useState(false);
+  const [shotModalVisible, setShotModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
-  const [modalGridDimensionX, setModalGridDimensionX] = useState(0);
-  const [modalGridDimensionY, setModalGridDimensionY] = useState(0);
 
   const [autoActions, setAutoActions] = useState([]);
+  const [autoActionsLength, setAutoActionsLength] = useState(0);
 
   const alliance = props.eventReducer.alliance;
+  const allianceBorderColor = (alliance === "blue") ? "#0000d1" : "#d10000";
   const fieldOrientation = props.eventReducer.fieldOrientation;
-
-  const chargeStationText = ["N/A", "Attempt", "Docked", "Engaged"];
 
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
@@ -60,396 +40,142 @@ function Auto(props) {
 
 
 
+
   useEffect(() => {
     navigation.setOptions({
       title: `Auto | ${matchData.team}`
     })
-    if (fieldOrientation == 1) {
-      var lGrid = JSON.parse(JSON.stringify(flipColumns(grid)));
-      setGrid(lGrid);
-    }
   }, [])
 
   useEffect(() => {
-    calculateFailedPieces()
+    if(autoActions.length > autoActionsLength) {
+      switch(autoActions[autoActions.length-1]) {
+        case 'autoSpeaker': setSpeakerNotes(speakerNotes+1); break;
+        case 'autoAmp': setAmpNotes(ampNotes+1); break;
+        case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes+1); break;
+        case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
+        default: console.log('Wrong autoAction has been added');
+      }
+      setAutoActionsLength(autoActions+1);
+    } //Handling of removal of actions should be in undo function
   }, [autoActions])
 
-  const updateGrid = (x, y, placementType) => {
-    //Placement types: Cube, Cone, RemoveCube, RemoveCone
-    let gridCopy = JSON.parse(JSON.stringify(grid));
+  const navigate = () => {
+    matchData.speakerNotes = speakerNotes;
+    matchData.ampNotes = ampNotes;
+    matchData.mobility = mobility;
+    matchData.autofailedSpeakerNotes = failedSpeakerNotes;
+    matchData.autofailedAmpNotes = failedAmpNotes;
+    props.setCurrentMatchData(matchData);
+    navigation.navigate('teleop')
+  }
 
-    if(!(gridCopy[x][y].type == "Cube" && placementType.includes("Cone")) ||
-       !(gridCopy[x][y].type == "Cone" && placementType.includes("Cube"))) {
-        //Preventing removing/adding game pieces in the wrong node
+  const undo = () => {
+    switch(autoActions[autoActions.length-1]) {
+      case 'autoSpeaker': setSpeakerNotes(speakerNotes-1); break;
+      case 'autoAmp': setAmpNotes(ampNotes-1); break;
+      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes-1); break;
+      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes-1); break;
+      default: if(autoActions.length != 0) console.log('Wrong autoAction has been undone');
+    }
 
-      switch(true) {
-        case placementType == "RemoveCube" && gridCopy[x][y].placements.includes("autoCube"): 
-          //Has cube, remove
-          try{gridCopy[x][y].placements.splice(gridCopy[x][y].placements.indexOf("autoCube"), 1);}
-          catch(err){console.log(err);}
-          //Use 'try' in case .placements doesn't contain autoCube
-          setTotalCubes(totalCubes - 1);
-          break;
+    autoActions.pop();
+    console.log(autoActions);
+  }
 
-        case placementType == "RemoveCone" && gridCopy[x][y].placements.includes("autoCone"): 
-          //Has cone, remove
-          try{gridCopy[x][y].placements.splice(gridCopy[x][y].placements.indexOf("autoCone"), 1);} 
-          catch(err){console.log(err);}
-          //Use 'try' in case .placements doesn't contain autoCone
-          setTotalCones(totalCones - 1);
-          break;
+  return (
+    <View style={autoStyles.mainContainer}>
 
-        case placementType == "Cube" && gridCopy[x][y].placements.length < 2: 
-          //Add cube
-          gridCopy[x][y].placements.push("autoCube");
-          setTotalCubes(totalCubes + 1);
-          break;
+      <ShotSuccessModal 
+      shotModalVisible={shotModalVisible} 
+      setShotModalVisible={setShotModalVisible} 
+      matchPhase='auto' modalType={modalType} 
+      autoActions={autoActions} 
+      setAutoActions={setAutoActions}/>
 
-        case placementType == "Cone" && gridCopy[x][y].placements.length < 2: 
-          //Add cone
-          gridCopy[x][y].placements.push("autoCone");
-          setTotalCones(totalCones + 1);
-          break;
-        
-        case placementType == "RemoveCube" || placementType == "RemoveCone" || 
-             placementType == "Cube" || placementType == "Cone":
-          //Trying to go into the negatives or above 2 game pieces, do nothing
-          return;
-
-        default: 
-          console.log("updateGrid switch got confused in auto.js /shrug - maybe placementType wasn't set properly");
+      {(fieldOrientation == 1) &&
+      <ImageBackground
+        style={{ flex: 1 }}
+        source={outtakeImages[fieldOrientation][alliance]}
+      ></ImageBackground>
       }
 
-    } else if ((gridCopy[x][y].type == "Cube" && placementType.includes("Cone")) || (gridCopy[x][y].type == "Cone" && placementType.includes("Cube"))) {
-      console.log("Trying to add/remove unplaceable game pieces in auto.js updateGrid :("); return; 
-    } else {console.log("idk something went wrong while using auto.js updateGrid XD"); return;}
-    
-    //console.log("AUTO.JS: " + gridCopy[x][y].type + " node " + x + ", " + y + " changed to " + gridCopy[x][y].placements + " with length " + gridCopy[x][y].placements.length);
-    setGrid(gridCopy);
+      {/* empty column */}
+      <View style={{ flex: 1 }}>
 
-  }
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
 
-const flipColumns = (arr) => {
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length / 2; j++) {
-      let temp = arr[i][j];
-      arr[i][j] = arr[i][arr[i].length - 1 - j];
-      arr[i][arr[i].length - 1 - j] = temp;
-    }
-  }
-  return arr;
-}
+          }}
+        >
 
-
-
-const updateChargeStation = (index) => {
-  setChargeStation(index);
-}
-
-const navigate = () => {
-  if (chargeStation === -1) {
-    alert("Please fill in charge station data.");
-    return;
-  }
-  matchData.autoGrid = grid;
-  matchData.autoChargeStation = chargeStationText[chargeStation];
-  matchData.totalCones = totalCones;
-  matchData.totalCubes = totalCubes;
-  matchData.mobility = mobility;
-  matchData.autoUpperFailedCones = upperFailedCones;
-  matchData.autoUpperFailedCubes = upperFailedCubes;
-  matchData.autoMidFailedCones = midFailedCones;
-  matchData.autoMidFailedCubes = midFailedCubes;
-  props.setCurrentMatchData(matchData);
-  navigation.navigate('teleop')
-}
-
-
-
-const calculateFailedPieces = () => {
-  var tempUpperFailedCones = 0
-  var tempUpperFailedCubes = 0
-  var tempMidFailedCones = 0
-  var tempMidFailedCubes = 0
-  for (var i=0;i<autoActions.length;i++){
-    if (autoActions[i] === 'UpperFailedCone'){
-      tempUpperFailedCones += 1;
-    } else if (autoActions[i] === 'MidFailedCone'){
-      tempMidFailedCones += 1;
-    } else if (autoActions[i] === 'UpperFailedCube'){
-      tempUpperFailedCubes += 1;
-    } else if (autoActions[i] === 'MidFailedCube'){
-      tempMidFailedCubes += 1;
-    }
-  }
-
-  setUpperFailedCones(tempUpperFailedCones);
-  setMidFailedCones(tempMidFailedCones);
-  setUpperFailedCubes(tempUpperFailedCubes);
-  setMidFailedCubes(tempMidFailedCubes);
-}
-
-const undo = () => {
-  autoActions.pop();
-  console.log(autoActions);
-  calculateFailedPieces();
-}
-
-  if (fieldOrientation == 1) {
-    return (
-      <View style={autoStyles.mainContainer}>
-
-        <GridSuccessModal modalVisible={gridModalVisible} setModalVisible={setGridModalVisible} matchPhase='auto' updateGrid={updateGrid} modalGridDimensionX={modalGridDimensionX} modalGridDimensionY={modalGridDimensionY} modalType={modalType} autoActions={autoActions} setAutoActions={setAutoActions} calculateFailedPieces={calculateFailedPieces} />
-
-        <ImageBackground
-          style={{ flex: 1 }}
-          source={loadingStationImages[alliance]}
-        ></ImageBackground>
-
-        {/* middle column */}
-        <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-             
-
-            }}
-          >
-
-            <ButtonGroup
-              onPress={updateChargeStation}
-              selectedIndex={chargeStation}
-              buttons={chargeStationText}
-              buttonStyle={autoStyles.ButtonGroup}
-              containerStyle={{ height: 50 }}
-              selectedButtonStyle={{ backgroundColor: '#24a2b6', borderBottomColor: '#188191' }}
+          <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={[autoStyles.Font, { fontSize: 16, flex: 0.3, marginBottom: '2%' }]}>Mobility Bonus</Text>
+            <Switch
+              style={{ flex: 0.7 }}
+              onValueChange={(value) => setMobility(value)}
+              value={mobility}
             />
-
           </View>
 
-          <View
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-      
-            }}
-          >
-            <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={[autoStyles.Font, { fontSize: 16, flex: 0.3, marginBottom: '2%' }]}>Mobility Bonus</Text>
-              <Switch
-                style={{ flex: 0.7 }}
-                onValueChange={(value) => setMobility(value)}
-                value={mobility}
-              />
-            </View>
-
-            <View style={{ flex: 0.3, margin: 20, borderColor: 'blue', borderWidth: 0 }}>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Cones: {upperFailedCones + midFailedCones}</Text>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Cubes: {upperFailedCubes + midFailedCubes}</Text>
-            </View>
-            <View style={{ flex: 0.3 }}>
-              <Text style={{ fontSize: 20 }}>Cones: {totalCones}</Text>
-              <Text style={{ fontSize: 20 }}>Cubes: {totalCubes}</Text>
-            </View>
-
+          <View style={{ flex: 0.3, margin: 10, borderColor: 'blue', borderWidth: 0, alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes}</Text>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes}</Text>
+          </View>
+          <View style={{ flex: 0.3, alignItems: 'center' }}>
+            <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes}</Text>
+            <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes}</Text>
           </View>
 
-          <View
-            style={{
-              flex: 0.8,
-              alignItems: "center",
-              justifyContent: "center",
-              paddingBottom: 10,
-              
-            }}
-          >
-            <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
-              <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[autoStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
-              <Blink text="Continue to Teleop" />
-            </TouchableOpacity>
-
-          </View>
         </View>
 
-        <View style={{ flex: 1 }}>
-          {grid.map((row, i) => (
-            <View style={autoStyles.gridRow} key={i}>
-              {row.map((square, j) => (
-                <TouchableOpacity
-                  style={[
-                    autoStyles.square,
-                    { backgroundColor: 'white' },
-                    square.type == "Cone" && {backgroundColor: (square.placements.length == 0) ? "#EDD488" : "yellow"},
-                    square.type == "Cube" && {backgroundColor: (square.placements.length == 0) ? "#BB88ED" : "purple"}
-                    //Different background colour depending on if node is empty or not
-                  ]}
-                  key={j}
-                  onPress={() => {
-                    setModalGridDimensionX(i);
-                    setModalGridDimensionY(j);
-                    setModalType(square.type);
-                    setGridModalVisible(!gridModalVisible);
-                  }}
-                >
-                  {square.type == "Cube" && square.placements.length > 0 && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Cone" && square.placements.length > 0 && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
+        <View
+          style={{
+            flex: 0.8,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingBottom: 10,
+            
+          }}
+        >
+          <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}
+            onPress={() => {
+            console.log('Speaker button pressed in auto');
+            setShotModalVisible(!shotModalVisible);
+            setModalType('Speaker');
+          }}>
+            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Speaker</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10 }]} 
+          onPress={() => {
+            console.log('Amp button pressed in auto');
+            setModalType('Amp');
+            setShotModalVisible(!shotModalVisible);
+          }}>
+            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Amp</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
+            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[autoStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
+            <Blink text="Continue to Teleop" />
+          </TouchableOpacity>
 
-                  {square.type == "Hybrid" && square.placements.length == 2 && square.placements.includes("autoCube") && square.placements.includes("autoCone") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/hybrid.png')} />}
-                  {square.type == "Hybrid" && square.placements.length == 2 && square.placements.includes("autoCube") && !square.placements.includes("autoCone") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Hybrid" && square.placements.length == 2 && square.placements.includes("autoCone") && !square.placements.includes("autoCube") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
-
-                  {square.type == "Hybrid" && square.placements.length == 1 && square.placements.includes("autoCube") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Hybrid" && square.placements.length == 1 && square.placements.includes("autoCone") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
-                  {/* Maybe there's a better way to do the hybrid but idk /shrug */}
-
-                  {square.type == "Cube" && <Text style={{position:"absolute", bottom:5, right:5, fontFamily:"Helvetica-Light", fontSize:26, color:"white"}}>{square.placements.length > 1 && square.placements.length}</Text>}
-                  {square.type == "Cone" && <Text style={{position:"absolute", bottom:5, right:5, fontFamily:"Helvetica-Light", fontSize:26}}>{square.placements.length > 1 && square.placements.length}</Text>}
-                  {square.type == "Hybrid" && 
-                  ((square.placements.includes("autoCube") && !square.placements.includes("autoCone")) ||
-                  (!square.placements.includes("autoCube") && square.placements.includes("autoCone"))) &&
-                    <Text style={{position:"absolute", bottom:5, right:5, fontFamily:"Helvetica-Light", fontSize:26}}>{square.placements.length > 1 && square.placements.length}</Text>
-                  }
-                </TouchableOpacity>
-              ))}
-            </View>
-          ))}
         </View>
       </View>
-    )
-  } else {
-    return (
-      <View style={autoStyles.mainContainer}>
 
-        <GridSuccessModal modalVisible={gridModalVisible} setModalVisible={setGridModalVisible} matchPhase='auto' updateGrid={updateGrid} modalGridDimensionX={modalGridDimensionX} modalGridDimensionY={modalGridDimensionY} modalType={modalType} autoActions={autoActions} setAutoActions={setAutoActions} calculateFailedPieces={calculateFailedPieces} />
+      {(fieldOrientation == 2) &&
+      <ImageBackground
+        style={{ flex: 1 }}
+        source={outtakeImages[fieldOrientation][alliance]}
+      ></ImageBackground>
+      }
 
-        <View style={{ flex: 1 }}>
-          {grid.map((row, i) => (
-            <View style={autoStyles.gridRow} key={i}>
-              {row.map((square, j) => (
-                <TouchableOpacity
-                  style={[
-                    autoStyles.square,
-                    { backgroundColor: 'white' },
-                    square.type == "Cone" && {backgroundColor: (square.placements.length == 0) ? "#EDD488" : "yellow"},
-                    square.type == "Cube" && {backgroundColor: (square.placements.length == 0) ? "#BB88ED" : "purple"}
-                    //Different background colour depending on if node is empty or not
-                  ]}
-                  key={j}
-                  onPress={() => {
-                    setModalGridDimensionX(i);
-                    setModalGridDimensionY(j);
-                    setModalType(square.type);
-                    setGridModalVisible(!gridModalVisible);
-                  }}
-                >
-                  {square.type == "Cube" && square.placements.length > 0 && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Cone" && square.placements.length > 0 && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
-
-                  {square.type == "Hybrid" && square.placements.length == 2 && square.placements.includes("autoCube") && square.placements.includes("autoCone") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/hybrid.png')} />}
-                  {square.type == "Hybrid" && square.placements.length == 2 && square.placements.includes("autoCube") && !square.placements.includes("autoCone") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Hybrid" && square.placements.length == 2 && square.placements.includes("autoCone") && !square.placements.includes("autoCube") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
-                  
-                  {square.type == "Hybrid" && square.placements.length == 1 && square.placements.includes("autoCube") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Hybrid" && square.placements.length == 1 && square.placements.includes("autoCone") && <Image style={autoStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
-                  {/* Maybe there's a better way to do the hybrid but idk :thonk: */}
-
-                  {square.type == "Cube" && <Text style={{position:"absolute", bottom:0, right:0, fontFamily:"Helvetica-Light", fontSize:26, color:"white"}}>{square.placements.length > 1 && square.placements.length}</Text>}
-                  {square.type == "Cone" && <Text style={{position:"absolute", bottom:0, right:0, fontFamily:"Helvetica-Light", fontSize:26}}>{square.placements.length > 1 && square.placements.length}</Text>}
-                  {square.type == "Hybrid" && 
-                  ((square.placements.includes("autoCube") && !square.placements.includes("autoCone")) ||
-                  (!square.placements.includes("autoCube") && square.placements.includes("autoCone"))) &&
-                    <Text style={{position:"absolute", bottom:0, right:0, fontFamily:"Helvetica-Light", fontSize:26}}>{square.placements.length > 1 && square.placements.length}</Text>
-                  }
-                  
-
-                </TouchableOpacity>
-              ))}
-            </View>
-          ))}
-        </View>
-
-        {/* middle column */}
-        <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-             
-
-            }}
-          >
-
-            <ButtonGroup
-              onPress={updateChargeStation}
-              selectedIndex={chargeStation}
-              buttons={chargeStationText}
-              buttonStyle={autoStyles.ButtonGroup}
-              containerStyle={{ height: 50 }}
-              selectedButtonStyle={{ backgroundColor: '#24a2b6', borderBottomColor: '#188191' }}
-            />
-
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-      
-            }}
-          >
-            <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={[autoStyles.Font, { fontSize: 16, flex: 0.3, marginBottom: '2%' }]}>Mobility Bonus</Text>
-              <Switch
-                style={{ flex: 0.7 }}
-                onValueChange={(value) => setMobility(value)}
-                value={mobility}
-              />
-            </View>
-
-            <View style={{ flex: 0.3, margin: 20, borderColor: 'blue', borderWidth: 0 }}>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Cones: {upperFailedCones + midFailedCones}</Text>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Cubes: {upperFailedCubes + midFailedCubes}</Text>
-            </View>
-            <View style={{ flex: 0.3 }}>
-              <Text style={{ fontSize: 20 }}>Cones: {totalCones}</Text>
-              <Text style={{ fontSize: 20 }}>Cubes: {totalCubes}</Text>
-            </View>
-
-          </View>
-
-          <View
-            style={{
-              flex: 0.8,
-              alignItems: "center",
-              justifyContent: "center",
-              paddingBottom: 10,
-              
-            }}
-          >
-            <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
-              <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[autoStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
-              <Blink text="Continue to Teleop" />
-            </TouchableOpacity>
-
-          </View>
-        </View>
-
-        <ImageBackground
-          style={{ flex: 1 }}
-          source={loadingStationImages[alliance]}
-        ></ImageBackground>
-      </View>
-    );
-  }
+    </View>
+  );
 }
 
 
@@ -457,10 +183,6 @@ const autoStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     flexDirection: "row",
-  },
-  gridRow: {
-    flexDirection: "row",
-    flex: 1,
   },
   square: {
     width: "33%",
@@ -493,6 +215,22 @@ const autoStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  SpeakerButton: {
+    flex: 1,
+    borderRadius: 7,
+    borderBottomWidth: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  AmpButton: {
+    flex: 1,
+    backgroundColor: '#9debb2',
+    borderRadius: 7,
+    borderBottomWidth: 5,
+    borderColor: '#9dcdbc',
+    alignItems: "center",
+    justifyContent: "center",
+  },
   PrematchFont: {
     fontFamily: 'Helvetica-Light',
     fontSize: 20
@@ -501,6 +239,7 @@ const autoStyles = StyleSheet.create({
     color: 'white',
     fontSize: 25
   },//yo wsg if u readin this u a tru g :))))
+  //thx bruh :)))
 });
 
 const mapStateToProps = (state) => state;

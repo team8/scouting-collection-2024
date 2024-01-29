@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Styles, StyleSheet, TouchableOpacity, ImageBackground, Image } from "react-native";
 import { connect } from "react-redux";
 import * as Types from "../store/types";
-import loadingStationImages from "../loading-station";
+import outtakeImages from "../outtake-images";
 import TeleopModal from '../components/teleop_modal';
 import { useNavigation } from '@react-navigation/native';
-import GridSuccessModal from '../components/gridSuccessModal';
+import GridSuccessModal from '../components/shotSuccessModal';
 
 
 function Teleop(props) {
@@ -138,7 +138,7 @@ function Teleop(props) {
         <TouchableOpacity style={{ flex: 1 }} onPress={() => props.openTeleopModal(true)}>
           <ImageBackground
             style={{ flex: 1 }}
-            source={loadingStationImages[alliance]}
+            source={outtakeImages[fieldOrientation][alliance]}
           ></ImageBackground>
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -274,20 +274,20 @@ function Teleop(props) {
                     setGridModalVisible(!gridModalVisible);
                   }}
                 >
-                  {square.type == "Cube" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Cone" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
+                  {square.type == "Cube" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />}
+                  {square.type == "Cone" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />}
 
                   {(square.type == "Hybrid" && square.placements.length == 2) &&
                   (square.placements.includes("autoCube") || square.placements.includes("teleopCube")) &&
                   !square.placements.includes("autoCone") && !square.placements.includes("teleopCone") &&  
-                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />
+                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                     // Contains cube, no cone, must be 2 cube
                   }
                   
                  {(square.type == "Hybrid" && square.placements.length == 2) &&
                  (square.placements.includes("autoCone") || square.placements.includes("teleopCone")) &&
                   !square.placements.includes("autoCube") && !square.placements.includes("teleopCube") &&
-                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />
+                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                     // Contains cone, no cube, must be 2 cone
                   }
 
@@ -296,19 +296,19 @@ function Teleop(props) {
                     !square.placements.includes("autoCone") && !square.placements.includes("teleopCone")) || 
                     ((square.placements.includes("autoCone") || square.placements.includes("teleopCone")) &&
                     !square.placements.includes("autoCube") && !square.placements.includes("teleopCube"))) &&
-                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/hybrid.png')} />
+                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                       //Doesn't satisfy conditions for it to be double, must be hybrid
                   }
 
 
                   {(square.type == "Hybrid" && square.placements.length == 1) &&
                     (square.placements.includes("autoCube") || square.placements.includes("teleopCube")) &&
-                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} /> 
+                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} /> 
                   }
 
                   {(square.type == "Hybrid" && square.placements.length == 1) &&
                     (square.placements.includes("autoCone") || square.placements.includes("teleopCone")) &&
-                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />
+                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                     //I'm sure you can read this right 
                   }
 
@@ -358,20 +358,20 @@ function Teleop(props) {
                     setGridModalVisible(!gridModalVisible);
                   }}
                 >
-                  {square.type == "Cube" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />}
-                  {square.type == "Cone" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />}
+                  {square.type == "Cube" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />}
+                  {square.type == "Cone" && square.placements.length != 0 && <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />}
 
                   {(square.type == "Hybrid" && square.placements.length == 2) &&
                   (square.placements.includes("autoCube") || square.placements.includes("teleopCube")) &&
                   !square.placements.includes("autoCone") && !square.placements.includes("teleopCone") &&  
-                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} />
+                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                     // Contains cube, no cone, must be 2 cube
                   }
                   
                  {(square.type == "Hybrid" && square.placements.length == 2) &&
                  (square.placements.includes("autoCone") || square.placements.includes("teleopCone")) &&
                   !square.placements.includes("autoCube") && !square.placements.includes("teleopCube") &&
-                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />
+                    <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                     // Contains cone, no cube, must be 2 cone
                   }
 
@@ -380,19 +380,19 @@ function Teleop(props) {
                     !square.placements.includes("autoCone") && !square.placements.includes("teleopCone")) || 
                     ((square.placements.includes("autoCone") || square.placements.includes("teleopCone")) &&
                     !square.placements.includes("autoCube") && !square.placements.includes("teleopCube"))) &&
-                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/hybrid.png')} />
+                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                       //Doesn't satisfy conditions for it to be double, must be hybrid
                   }
 
 
                   {(square.type == "Hybrid" && square.placements.length == 1) &&
                     (square.placements.includes("autoCube") || square.placements.includes("teleopCube")) &&
-                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cube.png')} /> 
+                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} /> 
                   }
 
                   {(square.type == "Hybrid" && square.placements.length == 1) &&
                     (square.placements.includes("autoCone") || square.placements.includes("teleopCone")) &&
-                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/cone.png')} />
+                      <Image style={teleopStyles.gamePieceIcon} resizeMode="contain" source={require('../assets/game_pieces/note.png')} />
                     //I'm sure you can read this right 
                   }
 
@@ -524,7 +524,7 @@ function Teleop(props) {
         <TouchableOpacity style={{ flex: 1 }} onPress={() => props.openTeleopModal(true)}>
           <ImageBackground
             style={{ flex: 1 }}
-            source={loadingStationImages[alliance]}
+            source={outtakeImages[fieldOrientation][alliance]}
           ></ImageBackground>
         </TouchableOpacity>
         <TeleopModal />
