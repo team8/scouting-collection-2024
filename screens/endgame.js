@@ -9,11 +9,12 @@ import { useNavigation } from '@react-navigation/native';
 function Endgame(props) {
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
     const alliance = props.eventReducer.alliance;
-    const endgameStatus = useState("");
+    const [endgameStatus, setEndgameStatus] = useState("");
     const [traps, setTraps] = useState(0);
+    const [endgameIndex, setEndgameIndex] = useState(0);
     const [endgameActions, setEndgameActions] = useState([]);
     const [failedTraps, setFailedTraps] = useState(0);
-    const endGameText = ["N/A", "Parked", "Climb", "Harmony"];
+    const [endGameText, setEndGameText] = useState(["N/A", "Parked", "Climb", "Harmony"]);
     const navigation = useNavigation();
 
     const navigate = () => {
@@ -22,9 +23,11 @@ function Endgame(props) {
     }
 
     const undo = () => {
-        let localMatchData = matchData;
-        endgameActions.pop();
-        props.setCurrentMatchData(localMatchData);
+        let editList = endgameActions;
+        editList.pop();
+        setEndgameActions(editList);
+        calculatePieces();
+        // props.setCurrentMatchData(localMatchData);
     }
 
     const calculatePieces = () => {
@@ -46,13 +49,17 @@ function Endgame(props) {
 
     const updateFailedTraps = () => {
         setFailedTraps(failedTraps+1);
-        endgameActions.push("Failed");
-        calculatePieces();
+        setEndgameActions([...endgameActions, "Failed"])
     }
 
     const updateTraps = () => {
         setTraps(traps+1);
-        endgameActions.push("Successful");
+        setEndgameActions([...endgameActions, "Successful"])
+    }
+
+    const updateEndgameStatus = (index) => {
+        setEndgameIndex(index);
+        setEndgameStatus(index);
     }
 
     useEffect(() => {
@@ -97,7 +104,8 @@ function Endgame(props) {
                 </View>
 
                 <ButtonGroup
-                    selectedIndex={endgameStatus}
+                    onPress={updateEndgameStatus}
+                    selectedIndex={endgameIndex}
                     buttons={endGameText}
                     buttonStyle={endgameStyles.ButtonGroup}
                     containerStyle={{height: 50}}
@@ -155,7 +163,7 @@ const endgameStyles = StyleSheet.create({
         backgroundColor: '#c71a1a',
         borderRadius: 7,
         borderBottomWidth: 5,
-        borderColor: '#c71a1a',
+        borderColor: "#821919",
         alignItems: "center",
         justifyContent: "center",
         height: 100,
