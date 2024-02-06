@@ -40,7 +40,7 @@ function Teleop(props) {
     matchData.teleopMidFailedCones = matchData.teleopActions.filter(x => x == 'MidFailedCone').length;
     matchData.teleopMidFailedCubes = matchData.teleopActions.filter(x => x == 'MidFailedCube').length;
     props.setCurrentMatchData(matchData);
-    navigation.navigate('postmatch')
+    navigation.navigate('endgame')
   }
 
   useEffect(() => {
