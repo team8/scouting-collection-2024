@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Switch,
-} from "react-native";
-import { connect } from "react-redux";
-import * as Types from "../store/types";
-import Blink from "../components/blink";
+} from 'react-native';
+import { connect } from 'react-redux';
+import * as Types from '../store/types';
+import Blink from '../components/blink';
 import { useNavigation } from '@react-navigation/native';
-import outtakeImages from "../outtake-images";
+import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
 
 
@@ -28,10 +28,12 @@ function Auto(props) {
   const [modalType, setModalType] = useState('');
 
   const [autoActions, setAutoActions] = useState([]);
-  const [autoActionsLength, setAutoActionsLength] = useState(0);
 
   const alliance = props.eventReducer.alliance;
-  const allianceBorderColor = (alliance === "blue") ? "#0000d1" : "#d10000";
+  const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
+  const ampColor = (alliance === 'red') ? '#DA4A19' : '#7DE3AB';
+  const ampBorderColor = (alliance === 'red') ? '#C03D25' : '#7DE3AB';
+  
   const fieldOrientation = props.eventReducer.fieldOrientation;
 
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
@@ -47,27 +49,14 @@ function Auto(props) {
     })
   }, [])
 
-  useEffect(() => {
-    if(autoActions.length > autoActionsLength) {
-      switch(autoActions[autoActions.length-1]) {
-        case 'autoSpeaker': setSpeakerNotes(speakerNotes+1); break;
-        case 'autoAmp': setAmpNotes(ampNotes+1); break;
-        case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes+1); break;
-        case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
-        default: console.log('Wrong autoAction has been added');
-      }
-      setAutoActionsLength(autoActions+1);
-    } //Handling of removal of actions should be in undo function
-  }, [autoActions])
-
   const navigate = () => {
     matchData.speakerNotes = speakerNotes;
     matchData.ampNotes = ampNotes;
     matchData.mobility = mobility;
-    matchData.autofailedSpeakerNotes = failedSpeakerNotes;
-    matchData.autofailedAmpNotes = failedAmpNotes;
+    matchData.autoFailedSpeakerNotes = failedSpeakerNotes;
+    matchData.autoFailedAmpNotes = failedAmpNotes;
     props.setCurrentMatchData(matchData);
-    navigation.navigate('teleop')
+    navigation.navigate('teleop');
   }
 
   const undo = () => {
@@ -80,7 +69,19 @@ function Auto(props) {
     }
 
     autoActions.pop();
-    console.log(autoActions);
+  }
+
+  const addAction = (action) => {
+    let temp = autoActions;
+    temp.push(action);
+
+    switch(action) {
+      case 'autoSpeaker': setSpeakerNotes(speakerNotes+1); break;
+      case 'autoAmp': setAmpNotes(ampNotes+1); break;
+      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes+1); break;
+      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
+    }
+    setAutoActions(temp);
   }
 
   return (
@@ -91,7 +92,9 @@ function Auto(props) {
       setShotModalVisible={setShotModalVisible} 
       matchPhase='auto' modalType={modalType} 
       autoActions={autoActions} 
-      setAutoActions={setAutoActions}/>
+      setAutoActions={setAutoActions}
+      addAction={addAction}
+      />
 
       {(fieldOrientation == 1) &&
       <ImageBackground
@@ -106,8 +109,8 @@ function Auto(props) {
         <View
           style={{
             flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
 
           }}
         >
@@ -135,23 +138,21 @@ function Auto(props) {
         <View
           style={{
             flex: 0.8,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
             paddingBottom: 10,
             
           }}
         >
           <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}
             onPress={() => {
-            console.log('Speaker button pressed in auto');
             setShotModalVisible(!shotModalVisible);
             setModalType('Speaker');
           }}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Speaker</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10 }]} 
+          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]} 
           onPress={() => {
-            console.log('Amp button pressed in auto');
             setModalType('Amp');
             setShotModalVisible(!shotModalVisible);
           }}>
@@ -161,7 +162,7 @@ function Auto(props) {
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[autoStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
-            <Blink text="Continue to Teleop" />
+            <Blink text='Continue to Teleop' />
           </TouchableOpacity>
 
         </View>
@@ -182,13 +183,13 @@ function Auto(props) {
 const autoStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   square: {
-    width: "33%",
+    width: '33%',
     borderTopWidth: 1,
     borderLeftWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
     flex: 1,
     justifyContent: 'center'
   },
@@ -199,12 +200,12 @@ const autoStyles = StyleSheet.create({
   },
   NextButton: {
     flex: 1,
-    backgroundColor: "#2E8B57",
+    backgroundColor: '#2E8B57',
     borderRadius: 7,
     borderBottomWidth: 5,
-    borderColor: "#006400",
-    alignItems: "center",
-    justifyContent: "center",
+    borderColor: '#006400',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   UndoButton: {
     flex: 1,
@@ -212,24 +213,22 @@ const autoStyles = StyleSheet.create({
     borderRadius: 7,
     borderBottomWidth: 5,
     borderColor: '#c98302',
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   SpeakerButton: {
     flex: 1,
     borderRadius: 7,
     borderBottomWidth: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   AmpButton: {
     flex: 1,
-    backgroundColor: '#9debb2',
     borderRadius: 7,
     borderBottomWidth: 5,
-    borderColor: '#9dcdbc',
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   PrematchFont: {
     fontFamily: 'Helvetica-Light',

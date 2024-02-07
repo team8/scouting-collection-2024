@@ -1,9 +1,11 @@
-import { Modal, View, TouchableOpacity, Text, Image } from 'react-native';
-import {connect} from 'react-redux';
+import { useState } from 'react';
+import { Modal, View, TouchableOpacity, Text, Image, Switch } from 'react-native';
+import { connect } from 'react-redux';
 import * as Types from '../store/types';
 
 function ShotSuccessModal(props) {
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
+  const [amplified, setAmplified] = useState(false);
 
   return(
     <Modal style={{ width: 100, height: 40 }} transparent={true} visible={props.shotModalVisible} onRequestClose={() => {
@@ -18,33 +20,30 @@ function ShotSuccessModal(props) {
           </TouchableOpacity>
           {/* Button to close modal */}
 
-          <Image style={{ height: 100, width: 100, marginBottom: 10 }} source={require('../assets/game_pieces/note.png')} />
+          <Image style={{ height: 150, width: 150, marginBottom: 10 }} source={require('../assets/game_pieces/note.png')} />
 
           <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
 
-            <TouchableOpacity style={{ backgroundColor: '#85e882', borderRadius: 10, padding: 10, marginHorizontal: 20, marginBottom: 25 }} onPress={() => {
-              //console.log('Successful shot button in modal pressed');
+            {(props.modalType == 'Speaker') && (props.matchPhase == 'teleop') &&
+              <Text style={[{ fontSize: 22, alignSelf: 'center', marginBottom: 20 }]}>Amplified</Text>}
+            {(props.modalType == 'Speaker') && (props.matchPhase == 'teleop') &&
+              <Switch
+                style={{ alignSelf: 'center' }}
+                onValueChange={(value) => setAmplified(value)}
+                value={amplified}
+              />}
 
-              let temp = (props.matchPhase == 'auto') ? props.autoActions : props.teleopActions;
-              temp.push(String(props.matchPhase + props.modalType));
-
-              if(props.matchPhase == 'auto') props.setAutoActions(temp);
-              else props.setTeleopActions(temp);
-
+            <TouchableOpacity style={{ backgroundColor: '#85e882', borderRadius: 10, padding: 10, marginHorizontal: 20, marginBottom: 25, marginTop: 30 }} onPress={() => {
+              if(props.modalType == 'speaker' && amplified) { props.addAction(props.matchPhase + 'Amplified' + props.modalType); }
+              else props.addAction(props.matchPhase + props.modalType);
+              setAmplified(false);
               props.setShotModalVisible(!props.shotModalVisible);
-            }}><Text style={{ alignSelf: 'center' }}>Successful Shot</Text></TouchableOpacity>
+            }}><Text style={{ alignSelf: 'center', fontSize: 20, paddingHorizontal: 130, paddingVertical: 20 }}>Successful Shot</Text></TouchableOpacity>
 
             <TouchableOpacity style={{ backgroundColor: '#f56c6c', borderRadius: 10, padding: 10, marginHorizontal: 20, marginBottom: 25 }} onPress={() => {
-              //console.log('Failed shot button in modal pressed');
-
-              let temp = (props.matchPhase == 'auto') ? props.autoActions : props.teleopActions; 
-              temp.push(String(props.matchPhase + 'Failed' + props.modalType));
-
-              if(props.matchPhase == 'auto') props.setAutoActions(temp);
-              else props.setTeleopActions(temp);
-
+              props.addAction(props.matchPhase + 'Failed' + props.modalType);
               props.setShotModalVisible(!props.shotModalVisible);
-            }}><Text style={{ alignSelf: 'center' }}>Failed Shot</Text></TouchableOpacity>
+            }}><Text style={{ alignSelf: 'center', fontSize: 20, paddingHorizontal: 130, paddingVertical: 20 }}>Failed Shot</Text></TouchableOpacity>
 
           </View>
 
