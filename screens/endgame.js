@@ -82,10 +82,10 @@ function Endgame(props) {
                     width:"50%"
                 }}>
 
-                <View style={{flexDirection:"row", marginBottom:30}}>
+                <View style={{flexDirection:"row", marginBottom:30, marginRight: 65}}>
                     <View style={{justifyContent:"center", alignItems:"center"}}>
-                        <Text style={{ fontSize: 20, marginRight: 10 }}>Traps: </Text>
-                        <Text style={{ fontSize: 20, marginRight: 10 }}>Failed Traps: </Text>
+                        <Text style={{ fontSize: 20, marginRight: 10 }}>Traps:</Text>
+                        <Text style={{ fontSize: 20, marginRight: 10 }}>Failed Traps:</Text>
                     </View>
                     <View>
                         <Text style={{ fontSize: 20 }}>{traps}</Text>
@@ -94,7 +94,7 @@ function Endgame(props) {
                 </View>
 
 
-                <View style={{flexDirection:"row", marginBottom: 40}}>
+                <View style={{flexDirection:"row", marginBottom: 40, marginRight: 10}}>
                     <TouchableOpacity style={[endgameStyles.FailedTrapButton, { width: 300, marginBottom: 10 }]} onPress={() => updateFailedTraps()}>
                         <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Failed Trap</Text>
                     </TouchableOpacity>
@@ -104,11 +104,12 @@ function Endgame(props) {
                 </View>
 
                 <ButtonGroup
+
                     onPress={updateEndgameStatus}
                     selectedIndex={endgameIndex}
                     buttons={endGameText}
                     buttonStyle={endgameStyles.ButtonGroup}
-                    containerStyle={{height: 50}}
+                    containerStyle={{height: 50, alignSelf:'center', marginRight: 54}}
                     selectedButtonStyle={{ backgroundColor: '#24a2b6', borderBottomColor: '#188191' }}
                 />
 
@@ -188,6 +189,8 @@ const endgameStyles = StyleSheet.create({
         color: 'white',
         fontSize: 25
     },
+    ButtonGroup: {
+    }
 })
 
 const mapStateToProps = (state) => state;
