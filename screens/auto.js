@@ -31,8 +31,8 @@ function Auto(props) {
 
   const alliance = props.eventReducer.alliance;
   const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
-  const ampColor = (alliance === 'red') ? '#DA4A19' : '#7DE3AB';
-  const ampBorderColor = (alliance === 'red') ? '#C03D25' : '#7DE3AB';
+  const ampColor = (alliance === 'red') ? '#DA4A19' : '#34BFA1';
+  const ampBorderColor = (alliance === 'red') ? '#C03D25' : '#289E85';
   
   const fieldOrientation = props.eventReducer.fieldOrientation;
 

@@ -19,10 +19,10 @@ function Prematch(props) {
     const navigation = useNavigation(); 
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
     const alliance = props.eventReducer.alliance;
-    var startingPositionSettings = fieldOrientation === 1 ? startingPositions.one_blue : startingPositions.two_blue;
+    var startingPositionSettings = fieldOrientation === 1 ? startingPositions.two_blue : startingPositions.one_blue;
 
     if (alliance == "red") {
-        startingPositionSettings = fieldOrientation === 1 ? startingPositions.one_red : startingPositions.two_red;
+        startingPositionSettings = fieldOrientation === 1 ? startingPositions.two_red : startingPositions.one_red;
     }
 
     useEffect(() => {
@@ -32,7 +32,7 @@ function Prematch(props) {
     }, [])
 
     const toggleSwitch = () => {
-        if (predWinner === "red") {
+        if (predWinner === "blue") {
             setPredWinner("blue");
         } else {
             setPredWinner("red");

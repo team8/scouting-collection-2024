@@ -39,8 +39,9 @@ function Teleop(props) {
 
   const navigation = useNavigation();
 
+  const [hybridNodeFilled, setHybridNodeFilled] = useState(false); //lol this is only used once
 
-
+ 
 
   useEffect(() => {
     navigation.setOptions({
@@ -54,7 +55,7 @@ function Teleop(props) {
     matchData.teleopFailedSpeakerNotes = failedSpeakerNotes;
     matchData.teleopFailedAmpNotes = failedAmpNotes;
     props.setCurrentMatchData(matchData);
-    navigation.navigate('postmatch');
+    navigation.navigate('endgame');
   }
 
   const undo = () => {
@@ -152,7 +153,7 @@ function Teleop(props) {
             <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[teleopStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
-            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Finish Match</Text>
+            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Continue to Endgame</Text>
           </TouchableOpacity>
 
         </View>
