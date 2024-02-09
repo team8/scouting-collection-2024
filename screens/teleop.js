@@ -18,8 +18,8 @@ import ShotSuccessModal from '../components/shotSuccessModal';
 function Teleop(props) {
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
-  const [speakerNotes, setSpeakerNotes] = useState(matchData.speakerNotes);
-  const [ampNotes, setAmpNotes] = useState(matchData.ampNotes);
+  const [speakerNotes, setSpeakerNotes] = useState(0);
+  const [ampNotes, setAmpNotes] = useState(0);
 
   const [failedSpeakerNotes, setFailedSpeakerNotes] = useState(0);
   const [failedAmpNotes, setFailedAmpNotes] = useState(0);
@@ -50,8 +50,8 @@ function Teleop(props) {
   }, [])
 
   const navigate = () => {
-    matchData.speakerNotes = speakerNotes;
-    matchData.ampNotes = ampNotes;
+    matchData.teleopSpeakerNotes = speakerNotes;
+    matchData.teleopAmpNotes = ampNotes;
     matchData.teleopFailedSpeakerNotes = failedSpeakerNotes;
     matchData.teleopFailedAmpNotes = failedAmpNotes;
     props.setCurrentMatchData(matchData);
@@ -64,7 +64,7 @@ function Teleop(props) {
       case 'teleopAmp': setAmpNotes(ampNotes-1); break;
       case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes-1); break;
       case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes-1); break;
-      default: if(teleopActions.length != 0) console.log('Wrong teleopAction has been undone');
+      default: console.log('Invalid action undone in teleop');
     }
 
     teleopActions.pop();
@@ -79,6 +79,7 @@ function Teleop(props) {
       case 'teleopAmp': setAmpNotes(ampNotes+1); break;
       case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes+1); break;
       case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
+      default: console.log('Invalid action added in teleop');
     }
     setTeleopActions(temp);
   }
@@ -115,13 +116,13 @@ function Teleop(props) {
         >
 
 
-          <View style={{ flex: 0.3, margin: 10, borderColor: 'blue', borderWidth: 0, alignItems: 'center' }}>
+          <View style={{ flex: 0.3, margin: 10, alignItems: 'center' }}>
             <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes}</Text>
             <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes}</Text>
           </View>
           <View style={{ flex: 0.3, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes}</Text>
-            <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes}</Text>
+            <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes + matchData.autoSpeakerNotes}</Text>
+            <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes + matchData.autoAmpNotes}</Text>
           </View>
 
         </View>
@@ -132,7 +133,6 @@ function Teleop(props) {
             alignItems: 'center',
             justifyContent: 'center',
             paddingBottom: 10,
-            
           }}
         >
           <TouchableOpacity style={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}

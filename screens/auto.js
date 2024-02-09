@@ -50,8 +50,8 @@ function Auto(props) {
   }, [])
 
   const navigate = () => {
-    matchData.speakerNotes = speakerNotes;
-    matchData.ampNotes = ampNotes;
+    matchData.autoSpeakerNotes = speakerNotes;
+    matchData.autoAmpNotes = ampNotes;
     matchData.mobility = mobility;
     matchData.autoFailedSpeakerNotes = failedSpeakerNotes;
     matchData.autoFailedAmpNotes = failedAmpNotes;
@@ -65,7 +65,7 @@ function Auto(props) {
       case 'autoAmp': setAmpNotes(ampNotes-1); break;
       case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes-1); break;
       case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes-1); break;
-      default: if(autoActions.length != 0) console.log('Wrong autoAction has been undone');
+      default: console.log('Invalid action undone in auto');
     }
 
     autoActions.pop();
@@ -80,6 +80,7 @@ function Auto(props) {
       case 'autoAmp': setAmpNotes(ampNotes+1); break;
       case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes+1); break;
       case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
+      default: console.log('Invalid action added in auto');
     }
     setAutoActions(temp);
   }
@@ -124,7 +125,7 @@ function Auto(props) {
             />
           </View>
 
-          <View style={{ flex: 0.3, margin: 10, borderColor: 'blue', borderWidth: 0, alignItems: 'center' }}>
+          <View style={{ flex: 0.3, margin: 10, alignItems: 'center' }}>
             <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes}</Text>
             <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes}</Text>
           </View>
