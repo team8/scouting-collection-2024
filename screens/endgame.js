@@ -19,6 +19,9 @@ function Endgame(props) {
 
     const navigate = () => {
         props.setCurrentMatchData(matchData);
+        matchData.climbStatus = endgameIndex
+        matchData.failedTraps = failedTraps
+        matchData.traps = traps
         navigation.navigate('postmatch')
     }
 
@@ -63,6 +66,9 @@ function Endgame(props) {
     }
 
     useEffect(() => {
+        setTraps(matchData.traps)
+        setFailedTraps(matchData.failedTraps)
+        setEndgameStatus(matchData.climbStatus)
         navigation.setOptions({
             title: `Endgame | ${matchData.team}`
         })
