@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 function Postmatch(props) {
     const [notes, setNotes] = useState("");
+    const [coopertition, setCoopertition] = useState(false);
     const [climbNotes, setClimbNotes] = useState("");
     const [robotDied, setRobotDied] = useState(false);
     const [robotTipped, setRobotTipped] = useState(false);
@@ -39,6 +40,7 @@ function Postmatch(props) {
         }
         matchData.notes = notes.replace(/ /g, '>').replace(/,/g, '<');
         matchData.climbNotes = climbNotes.replace(/ /g, '>').replace(/,/g, '<');
+        matchData.coopertition = coopertition;
         matchData.died = robotDied;
         matchData.tipped = robotTipped;
         matchData.driverRating = driverRating;
@@ -52,7 +54,7 @@ function Postmatch(props) {
     return (
         <View style={{ flex: 1, marginHorizontal: 40 }}>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.Font, {fontSize: 22, flex: 0.15}]}>Notes</Text>
+                <Text style={[postmatchStyles.Font, {fontSize: 22, flex: 0.205}]}>Notes</Text>
                 <View style={[postmatchStyles.InputContainer, {flex: 0.9}]}>
                     <TextInput
                         style={postmatchStyles.TextInputContainer}
@@ -60,6 +62,22 @@ function Postmatch(props) {
                         multiline={true}
                         maxLength = {200}
                         onChangeText={(text) => setNotes(text)}
+                    />
+                </View>
+                <View
+                    style={{
+                        flex: 0.34,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderColor: "red",
+                        borderWidth: 0,
+                        marginBottom: 20
+                    }}>
+                    <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Coorpetition Bonus</Text>
+                    <Switch
+                        style={{ flex: 0.7 }}
+                        onValueChange={(value) => setCoopertition(value)}
+                        value={coopertition}
                     />
                 </View>
             </View>

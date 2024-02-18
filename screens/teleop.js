@@ -35,8 +35,6 @@ function Teleop(props) {
   const ampColor = (alliance === 'red') ? '#DA4A19' : '#34BFA1';
   const ampBorderColor = (alliance === 'red') ? '#C03D25' : '#289E85';
 
-  const [coorpetition, setCoopertition] = useState(false);
-
   const fieldOrientation = props.eventReducer.fieldOrientation;
 
   const navigation = useNavigation();
@@ -56,7 +54,6 @@ function Teleop(props) {
     matchData.ampNotes = ampNotes;
     matchData.teleopFailedSpeakerNotes = failedSpeakerNotes;
     matchData.teleopFailedAmpNotes = failedAmpNotes;
-    matchData.coopertition = coorpetition;
     props.setCurrentMatchData(matchData);
     navigation.navigate('endgame');
   }
@@ -127,23 +124,6 @@ function Teleop(props) {
             <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes}</Text>
           </View>
 
-        </View>
-
-        <View
-            style={{
-              flex: 0.3,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderColor: "red",
-              borderWidth: 0,
-              marginBottom: 20
-            }}>
-          <Text style={{ fontSize: 20, marginBottom: 10}}>Coorpetition Bonus</Text>
-          <Switch
-              style={{ flex: 0.7 }}
-              onValueChange={(value) => setCoopertition(value)}
-              value={coorpetition}
-          />
         </View>
 
         <View
