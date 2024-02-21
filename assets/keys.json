@@ -7,8 +7,6 @@
     "event": "e",
     "predictedWinner": "pW",
     "intakeLocations": "iL",
-    "totalCones": "tCo",
-    "totalCubes": "tCu",
     "mobility": "mob",
     "autoGrid": "aG",
     "teleGrid": "tG",
@@ -18,8 +16,7 @@
     "notes": "n",
     "driverRating": "drR",
     "defenseRating": "deR",
-    "cubeIntakeRating": "cuIR",
-    "coneIntakeRating": "coIR",
+    "intakeRating": "coIR",
     "tipped": "ti",
     "died": "d"
 }
