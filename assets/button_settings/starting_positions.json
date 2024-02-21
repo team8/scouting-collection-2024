@@ -1,18 +1,18 @@
 {
     "one_red": [
-        {"id": 1, "left": 408, "top": 75, "paddingRight": 115, "padding": 65, "name": "inside"},
-        {"id": 2, "left": 445, "top": 210, "paddingRight": 25, "padding": 118, "name": "middle"},
-        {"id": 3, "left": 255, "top": 450, "paddingLeft": 150, "paddingRight": 180, "padding": 70, "name": "outside"}
+        {"id": 1, "left": 300, "top": 40, "paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
+        {"id": 2, "left": 300, "top": 210, "paddingRight": 25, "padding": 118, "name": "middle"},
+        {"id": 3, "left": 200, "top": 450, "paddingLeft": 150, "paddingRight": 180, "padding": 70, "name": "outside"}
     ],
     "two_red": [
-        {"id": 1, "left": 66, "top": 400, "paddingRight": 115, "padding": 65, "name": "inside"},
-        {"id": 2, "left": 66, "top": 160, "paddingRight": 25, "padding": 118, "name": "middle"},
-        {"id": 3, "left": 66, "top": 15, "paddingLeft": 150, "paddingRight": 180, "padding": 70, "name": "outside"}
+        {"id": 1, "left": 66, "top": 420, "paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
+        {"id": 2, "left": 66, "top": 180, "paddingRight": 25, "padding": 118, "name": "middle"},
+        {"id": 3, "left": 66, "top": 35, "paddingLeft": 150, "paddingRight": 180, "padding": 70, "name": "outside"}
     ],
     "one_blue": [
-        {"id": 1, "left": 375, "top": 384, "paddingRight": 115, "padding": 60, "name": "inside"},
-        {"id": 2, "left": 412, "top": 145, "paddingRight": 25, "padding": 114, "name": "middle"},
-        {"id": 3, "left": 220, "top": 5, "paddingLeft": 150, "paddingRight": 180, "padding": 67, "name": "outside"}
+        {"id": 1, "left": 305, "top": 454,"paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
+        {"id": 2, "left": 305, "top": 215, "paddingRight": 25, "padding": 114, "name": "middle"},
+        {"id": 3, "left": 190, "top": 75, "paddingLeft": 150, "paddingRight": 180, "padding": 67, "name": "outside"}
     ],
     "two_blue": [
         {"id": 1, "left": 105, "top": 100, "paddingRight": 113, "padding": 62, "name": "inside"},

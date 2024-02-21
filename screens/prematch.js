@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, ImageBackground, Switch, TouchableOp
 import { useNavigation } from '@react-navigation/native';
 import {connect} from 'react-redux';
 import * as Types from '../store/types';
-import fieldImages from '../field';
+import fieldImages from '../field.js';
 
 let startingPositions = require('../assets/button_settings/starting_positions.json');
 
