@@ -51,7 +51,9 @@ function Teleop(props) {
 
   const navigate = () => {
     matchData.speakerNotes = speakerNotes;
+    matchData.failedSpeakerNotes = failedSpeakerNotes;
     matchData.ampNotes = ampNotes;
+    matchData.failedAmpNotes = failedAmpNotes;
     matchData.teleopFailedSpeakerNotes = failedSpeakerNotes;
     matchData.teleopFailedAmpNotes = failedAmpNotes;
     props.setCurrentMatchData(matchData);
