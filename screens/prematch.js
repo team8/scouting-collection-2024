@@ -60,8 +60,6 @@ function Prematch(props) {
         localMatchData.startingPosition = currentRobotPositionName;
         localMatchData.predictedWinner = predWinner;
         localMatchData.intakeLocations = [];
-        localMatchData.totalCones = 0;
-        localMatchData.totalCubes = 0;
         localMatchData.mobility = false;
         props.setCurrentMatchData(localMatchData);
         props.setFieldOrientationRedux(fieldOrientation);

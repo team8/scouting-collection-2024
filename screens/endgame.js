@@ -1,65 +1,57 @@
-import React, { useState, useEffect } from "react";
-import {View, Text, StyleSheet, TextInput, Switch, TouchableOpacity, ImageBackground} from "react-native";
+import React, { useState, useEffect } from 'react';
+import {View, Text, StyleSheet, TextInput, Switch, TouchableOpacity, ImageBackground} from 'react-native';
 import {Button, ButtonGroup, Slider} from 'react-native-elements';
-import { connect } from "react-redux";
-import * as Types from "../store/types";
-import stage from "../stage";
+import { connect } from 'react-redux';
+import * as Types from '../store/types';
+import stage from '../stage';
 import { useNavigation } from '@react-navigation/native';
 
 function Endgame(props) {
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
     const alliance = props.eventReducer.alliance;
-    const [endgameStatus, setEndgameStatus] = useState("");
+
+
     const [traps, setTraps] = useState(0);
-    const [endgameIndex, setEndgameIndex] = useState(0);
-    const [endgameActions, setEndgameActions] = useState([]);
     const [failedTraps, setFailedTraps] = useState(0);
-    const [endGameText, setEndGameText] = useState(["N/A", "Parked", "Climb", "Harmony"]);
+
+    const [climbStatus, setClimbStatus] = useState(0);
+    const [endgameActions, setEndgameActions] = useState([]);
+    const endgameText = ['N/A', 'Parked', 'Climb', 'Harmony'];
     const navigation = useNavigation();
 
     const navigate = () => {
+        matchData.traps = traps;
+        matchData.failedTraps = failedTraps;
+        matchData.climbStatus = endgameText[climbStatus];
         props.setCurrentMatchData(matchData);
-        navigation.navigate('postmatch')
+        navigation.navigate('postmatch');
     }
 
     const undo = () => {
-        let editList = endgameActions;
-        editList.pop();
-        setEndgameActions(editList);
-        calculatePieces();
+        switch(endgameActions[endgameActions.length-1]) {
+            case 'trap': setTraps(traps-1); break;
+            case 'failedTrap': setFailedTraps(failedTraps-1); break;
+            default: console.log('Invalid action undone in endgame');
+        }
+
+        endgameActions.pop();
         // props.setCurrentMatchData(localMatchData);
     }
 
-    const calculatePieces = () => {
-        let calcTraps = 0
-        let calcFailedTraps = 0
+    const addAction = (action) => {
+        let temp = endgameActions;
+        temp.push(action);
 
-        for (let i=0; i<endgameActions.length; i++) {
-            if (endgameActions[i] == "Failed") {
-                calcFailedTraps++;
-            }
-            else {
-                calcTraps++;
-            }
+        switch(action) {
+            case 'trap': setTraps(traps+1); break;
+            case 'failedTrap': setFailedTraps(failedTraps+1); break;
+            default: console.log('Invalid action added in endgame');
         }
-
-        setFailedTraps(calcFailedTraps);
-        setTraps(calcTraps);
+        setEndgameActions(temp);
     }
 
-    const updateFailedTraps = () => {
-        setFailedTraps(failedTraps+1);
-        setEndgameActions([...endgameActions, "Failed"])
-    }
-
-    const updateTraps = () => {
-        setTraps(traps+1);
-        setEndgameActions([...endgameActions, "Successful"])
-    }
-
-    const updateEndgameStatus = (index) => {
-        setEndgameIndex(index);
-        setEndgameStatus(index);
+    const updateClimbStatus = (index) => {
+        setClimbStatus(index);
     }
 
     useEffect(() => {
@@ -70,55 +62,46 @@ function Endgame(props) {
 
 
     return (
-        <View style={{flexDirection:'row', height:"100%", width:"100%"}}>
+        <View style={{flexDirection:'row', flex: 1}}>
 
-            <ImageBackground style={{flex: 1, height: "100%", width:"90%"}} source={stage[alliance]}></ImageBackground>
+            <ImageBackground style={{flex: 1, height: '100%', width:'100%' }} source={stage[alliance]}></ImageBackground>
 
             <View
                 style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flex: 1,
-                    width:"50%"
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1
                 }}>
 
-                <View style={{flexDirection:"row", marginBottom:30, marginRight: 65}}>
-                    <View style={{justifyContent:"center", alignItems:"center"}}>
-                        <Text style={{ fontSize: 20, marginRight: 10 }}>Traps:</Text>
-                        <Text style={{ fontSize: 20, marginRight: 10 }}>Failed Traps:</Text>
-                    </View>
-                    <View>
-                        <Text style={{ fontSize: 20 }}>{traps}</Text>
-                        <Text style={{ fontSize: 20 }}>{failedTraps}</Text>
-                    </View>
+                <View style={{flex: 0.3, alignItems: 'center', margin: 20 }}>
+                    <Text style={{ fontSize: 20 }}>Traps: {traps}</Text>
+                    <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Traps: {failedTraps}</Text>
                 </View>
 
-
-                <View style={{flexDirection:"row", marginBottom: 40, marginRight: 10}}>
-                    <TouchableOpacity style={[endgameStyles.FailedTrapButton, { width: 300, marginBottom: 10 }]} onPress={() => updateFailedTraps()}>
-                        <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Failed Trap</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[endgameStyles.SuccessfulTrapButton, { width: 300, marginBottom: 10 }]} onPress={() => updateTraps()}>
+                <View style={{alignItems: 'stretch', flexDirection: 'row', marginVertical: 40, marginHorizontal: 40}}>
+                    <TouchableOpacity style={[endgameStyles.SuccessfulTrapButton, { width: 300, marginBottom: 10 }]} onPress={() => addAction('trap')}>
                         <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Trap</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[endgameStyles.FailedTrapButton, { width: 300, marginBottom: 10 }]} onPress={() => addAction('failedTrap')}>
+                        <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Failed Trap</Text>
                     </TouchableOpacity>
                 </View>
 
                 <ButtonGroup
-
-                    onPress={updateEndgameStatus}
-                    selectedIndex={endgameIndex}
-                    buttons={endGameText}
+                    onPress={setClimbStatus}
+                    selectedIndex={climbStatus}
+                    buttons={endgameText}
                     buttonStyle={endgameStyles.ButtonGroup}
-                    containerStyle={{height: 50, alignSelf:'center', marginRight: 54}}
+                    containerStyle={{height: 50}}
                     selectedButtonStyle={{ backgroundColor: '#24a2b6', borderBottomColor: '#188191' }}
                 />
 
-                <View style={{flexDirection:"row", paddingTop: 100, width:"42%", alignItems:"center"}}>
+                <View style={{ flexDirection:'row', paddingTop: 70, width:'42%' }}>
                     <TouchableOpacity style={[endgameStyles.UndoButton]} onPress={() => undo()}>
                         <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Undo</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{flexDirection:"row", paddingTop: 10, width:"42%", alignItems:"center"}}>
+                <View style={{ flexDirection:'row', paddingTop: 10, width:'42%' }}>
                     <TouchableOpacity style={[endgameStyles.NextButton]} onPress={() => navigate()}>
                         <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Finish Match</Text>
                     </TouchableOpacity>
@@ -127,34 +110,42 @@ function Endgame(props) {
 
 
         </View>
-
     );
-        }
+}
 
 const endgameStyles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        flexDirection: "row",
+        flexDirection: 'row',
+        flexDirection: 'row',
     },
     NextButton: {
         flex: 1,
-        backgroundColor: "#2E8B57",
+        backgroundColor: '#2E8B57',
+        backgroundColor: '#2E8B57',
         borderRadius: 7,
         borderBottomWidth: 5,
-        borderColor: "#006400",
-        alignItems: "center",
-        justifyContent: "center",
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
         width: 300,
         height: 100,
     },
     SuccessfulTrapButton: {
         flex: 1,
-        backgroundColor: "#2E8B57",
+        backgroundColor: '#2E8B57',
+        backgroundColor: '#2E8B57',
         borderRadius: 7,
         borderBottomWidth: 5,
-        borderColor: "#006400",
-        alignItems: "center",
-        justifyContent: "center",
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
         width: 300,
         height: 100,
         marginRight: 40,
@@ -164,12 +155,14 @@ const endgameStyles = StyleSheet.create({
         backgroundColor: '#c71a1a',
         borderRadius: 7,
         borderBottomWidth: 5,
-        borderColor: "#821919",
-        alignItems: "center",
-        justifyContent: "center",
+        borderColor: '#821919',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: '#821919',
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 100,
         width: 300,
-        marginRight: 40,
     },
     UndoButton: {
         flex: 1,
@@ -177,8 +170,10 @@ const endgameStyles = StyleSheet.create({
         borderRadius: 7,
         borderBottomWidth: 5,
         borderColor: '#c98302',
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 100,
     },
     PrematchFont: {

@@ -34,7 +34,7 @@ function ShotSuccessModal(props) {
               />}
 
             <TouchableOpacity style={{ backgroundColor: '#85e882', borderRadius: 10, padding: 10, marginHorizontal: 20, marginBottom: 25, marginTop: 30 }} onPress={() => {
-              if(props.modalType == 'speaker' && amplified) { props.addAction(props.matchPhase + 'Amplified' + props.modalType); }
+              if(props.modalType == 'Speaker' && amplified) { props.addAction(props.matchPhase + 'Amplified' + props.modalType); }
               else props.addAction(props.matchPhase + props.modalType);
               setAmplified(false);
               props.setShotModalVisible(!props.shotModalVisible);
