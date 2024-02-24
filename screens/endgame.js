@@ -10,6 +10,7 @@ function Endgame(props) {
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
     const alliance = props.eventReducer.alliance;
 
+
     const [traps, setTraps] = useState(0);
     const [failedTraps, setFailedTraps] = useState(0);
 
@@ -109,20 +110,24 @@ function Endgame(props) {
 
 
         </View>
-
     );
-        }
+}
 
 const endgameStyles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         flexDirection: 'row',
+        flexDirection: 'row',
     },
     NextButton: {
         flex: 1,
         backgroundColor: '#2E8B57',
+        backgroundColor: '#2E8B57',
         borderRadius: 7,
         borderBottomWidth: 5,
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: '#006400',
         alignItems: 'center',
         justifyContent: 'center',
@@ -132,8 +137,12 @@ const endgameStyles = StyleSheet.create({
     SuccessfulTrapButton: {
         flex: 1,
         backgroundColor: '#2E8B57',
+        backgroundColor: '#2E8B57',
         borderRadius: 7,
         borderBottomWidth: 5,
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: '#006400',
         alignItems: 'center',
         justifyContent: 'center',
@@ -149,6 +158,9 @@ const endgameStyles = StyleSheet.create({
         borderColor: '#821919',
         alignItems: 'center',
         justifyContent: 'center',
+        borderColor: '#821919',
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 100,
         width: 300,
     },
@@ -158,6 +170,8 @@ const endgameStyles = StyleSheet.create({
         borderRadius: 7,
         borderBottomWidth: 5,
         borderColor: '#c98302',
+        alignItems: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         height: 100,
