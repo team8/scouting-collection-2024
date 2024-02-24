@@ -98,13 +98,13 @@ function Auto(props) {
 
       {(fieldOrientation == 1) &&
       <ImageBackground
-        style={{ flex: 1 }}
+        style={{ flex: 0.7 }}
         source={outtakeImages[fieldOrientation][alliance]}
       ></ImageBackground>
       }
 
       {/* empty column */}
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 0.3 }}>
 
         <View
           style={{
@@ -170,7 +170,7 @@ function Auto(props) {
 
       {(fieldOrientation == 2) &&
       <ImageBackground
-        style={{ flex: 1 }}
+        style={{ flex: 0.7 }}
         source={outtakeImages[fieldOrientation][alliance]}
       ></ImageBackground>
       }

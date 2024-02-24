@@ -14,6 +14,8 @@ import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
 import IntakeLocationModal from '../components/intakeLocationModal';
+import ShotLocationModal from '../components/shotLocationModal';
+import { Button } from 'react-native-elements';
 
 
 function Teleop(props) {
@@ -24,11 +26,12 @@ function Teleop(props) {
 
   const [failedSpeakerNotes, setFailedSpeakerNotes] = useState(0);
   const [failedAmpNotes, setFailedAmpNotes] = useState(0);
- 
+
 
 
   const [shotModalVisible, setShotModalVisible] = useState(false);
   const [intakeModalVisible, setIntakeModalVisible] = useState(false);
+  const [shotLocationModalVisible, setShotLocationModalVisible] = useState(false)
   const [modalType, setModalType] = useState('');
 
   const [teleopActions, setTeleopActions] = useState([]);
@@ -43,14 +46,22 @@ function Teleop(props) {
 
   const navigation = useNavigation();
 
-  const [hybridNodeFilled, setHybridNodeFilled] = useState(false); //lol this is only used once
 
-
+  const [heatmap, setHeatmap] = useState([]);
 
   useEffect(() => {
     navigation.setOptions({
       title: `Teleop | ${matchData.team}`
     })
+    var heatmapTemp = []
+    for (var i = 0; i < 10; i++) {
+      heatmapTemp.push([])
+      for (var j = 0; j < 10; j++) {
+        heatmapTemp[i].push(0)
+      }
+    }
+    console.log(heatmapTemp)
+    setHeatmap(heatmapTemp)
   }, [])
 
   const navigate = () => {
@@ -87,6 +98,30 @@ function Teleop(props) {
     setTeleopActions(temp);
   }
 
+  const ScoringButtons = () => {
+    return(
+      <>
+      <TouchableOpacity style={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, }]}
+      onPress={() => {
+        setShotModalVisible(!shotModalVisible);
+        setModalType('Speaker');
+        setShotLocationModalVisible(!shotLocationModalVisible)
+
+      }}>
+      <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Speaker</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={[teleopStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
+      onPress={() => {
+        setModalType('Amp');
+        setShotModalVisible(!shotModalVisible);
+        setShotLocationModalVisible(!shotLocationModalVisible);
+      }}>
+      <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Amp</Text>
+    </TouchableOpacity>
+    </>
+    )
+  }
+
   return (
     <View style={teleopStyles.mainContainer}>
 
@@ -99,171 +134,227 @@ function Teleop(props) {
         addAction={addAction}
       />
       <IntakeLocationModal
-      intakeModalVisible={intakeModalVisible}
-      setIntakeModalVisible={setIntakeModalVisible}
-      
-      intakeActions={intakeActions}
-      setIntakeActions={setIntakeActions}
-      
+        intakeModalVisible={intakeModalVisible}
+        setIntakeModalVisible={setIntakeModalVisible}
+
+        intakeActions={intakeActions}
+        setIntakeActions={setIntakeActions}
+        
+
       />
 
+      <ShotLocationModal
+        shotLocationModalVisible={shotLocationModalVisible}
+        setShotLocationModalVisible={setShotLocationModalVisible}
+        speakerButtonStyle={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, height: 100}]}
+        ScoringButtons={ScoringButtons}
+      />
+
+
+
       {(fieldOrientation == 1) &&
-        <TouchableOpacity style={{ flex: 1 }} onPress={() => {
-          console.log("hhehehe")
-          setIntakeModalVisible(true)
-          }}>
-          <ImageBackground
-            style={{ flex: 1 }}
-            source={outtakeImages[fieldOrientation][alliance]}
-          ></ImageBackground>
-          </TouchableOpacity>
+
+        <ImageBackground
+          style={{ flex: 0.7, justifyContent: 'center', borderWidth: 5 }}
+          source={outtakeImages[fieldOrientation][alliance]}
+
+        >
+
+          {/* <Text>Tetetete</Text>
+            <Text style={{textAlign: 'center'}}>jlbaskjdbflsd</Text> */}
+          <View style={{ flex: 0.7, flexDirection: "column", borderColor: "red", borderWidth: 1 }}>
+            <Text>Tetetete</Text>
+            <Text style={{ textAlign: 'center' }}>jlbaskjdbflsd</Text>
+          </View>
+          {/* {heatmap.map((y) => {
+              return(
+                <Flex>
+                  {heatmap[y].map((x) => {
+                    return(
+                      <TouchableOpacity style={{borderColor: "black", borderWidth: 1}} onPress={()=>{console.log([x, y])}}>
+
+                      </TouchableOpacity>
+                    )
+                  })}
+                </Flex>
+              )
+            
+            })} */}
+        </ImageBackground>
 
       }
 
-          {/* empty column */}
-          <View style={{ flex: 1 }}>
 
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
+      <View style={{ flex: 0.3 }}>
 
-              }}
-            >
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+
+          }}
+        >
 
 
-              <View style={{ flex: 0.3, margin: 10, borderColor: 'blue', borderWidth: 0, alignItems: 'center' }}>
-                <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes}</Text>
-                <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes}</Text>
-              </View>
-              <View style={{ flex: 0.3, alignItems: 'center' }}>
-                <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes}</Text>
-                <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes}</Text>
-              </View>
-
-            </View>
-
-            <View
-              style={{
-                flex: 0.8,
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingBottom: 10,
-
-              }}
-            >
-              <TouchableOpacity style={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}
-                onPress={() => {
-                  setShotModalVisible(!shotModalVisible);
-                  setModalType('Speaker');
-                }}>
-                <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Speaker</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[teleopStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
-                onPress={() => {
-                  setModalType('Amp');
-                  setShotModalVisible(!shotModalVisible);
-                }}>
-                <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Amp</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
-                <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[teleopStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
-                <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Continue to Endgame</Text>
-              </TouchableOpacity>
-
-            </View>
+          <View style={{ flex: 0.3, margin: 10, borderColor: 'blue', borderWidth: 0, alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes}</Text>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes}</Text>
+          </View>
+          <View style={{ flex: 0.3, alignItems: 'center' }}>
+            <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes}</Text>
+            <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes}</Text>
           </View>
 
-          {(fieldOrientation == 2) &&
-             <TouchableOpacity style={{ flex: 1 }} onPress={() => {
-              setIntakeModalVisible(true)
-              }}>
-              <ImageBackground
-                style={{ flex: 1 }}
-                source={outtakeImages[fieldOrientation][alliance]}
-              ></ImageBackground>
-              </TouchableOpacity>
-          }
+        </View>
+
+        <View
+          style={{
+            flex: 0.8,
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: 10,
+
+          }}
+        >
+          <TouchableOpacity style={[teleopStyles.IntakeButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}>
+            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Intake</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
+            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[teleopStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
+            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Continue to Endgame</Text>
+          </TouchableOpacity>
 
         </View>
+      </View>
+
+      {(fieldOrientation == 2) &&
+
+        <ImageBackground
+          style={{ flex: 0.7, justifyContent: 'center', }}
+          source={outtakeImages[fieldOrientation][alliance]}
+        >
+
+          {/* <View style={{ flexDirection: "column"}}>
+               <Text style={{textAlign: 'center'}}>Tetetete</Text>
+               <Text style={{textAlign: 'center'}}>jlbaskjdbflsd</Text>
+             </View> */}
+          <View style={{ width: "100%", alignSelf: "center" }}>
+            {heatmap && [...Array(heatmap.length).keys()].map((y) => {
+
+
+              return (
+                <View style={{ flexDirection: 'row', width: "100%", height: "10%" }}>
+                  {heatmap[y] && [...Array(heatmap[y].length).keys()].map((x) => {
+
+                    return (
+                      <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
+                        console.log([x, y])
+                        setShotLocationModalVisible(!shotLocationModalVisible)
+
+                      }}>
+                        <Text></Text>
+                        {/* Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
+                      </TouchableOpacity>
+                    )
+                  })}
+
+
+                </View>
+              )
+
+            })}
+          </View>
+        </ImageBackground>
+
+      }
+
+    </View>
   );
 }
 
 
-      const teleopStyles = StyleSheet.create({
-        mainContainer: {
-        flex: 1,
-      flexDirection: 'row',
+const teleopStyles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    flexDirection: 'row',
   },
-      square: {
-        width: '33%',
-      borderTopWidth: 1,
-      borderLeftWidth: 1,
-      borderColor: 'black',
-      flex: 1,
-      justifyContent: 'center'
+  square: {
+    width: '33%',
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: 'black',
+    flex: 1,
+    justifyContent: 'center'
   },
-      gamePieceIcon: {
-        height: '60%',
-      width: '60%',
-      alignSelf: 'center'
+  gamePieceIcon: {
+    height: '60%',
+    width: '60%',
+    alignSelf: 'center'
   },
-      NextButton: {
-        flex: 1,
-      backgroundColor: '#2E8B57',
-      borderRadius: 7,
-      borderBottomWidth: 5,
-      borderColor: '#006400',
-      alignItems: 'center',
-      justifyContent: 'center',
+  NextButton: {
+    flex: 1,
+    backgroundColor: '#2E8B57',
+    borderRadius: 7,
+    borderBottomWidth: 5,
+    borderColor: '#006400',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-      UndoButton: {
-        flex: 1,
-      backgroundColor: '#ffae19',
-      borderRadius: 7,
-      borderBottomWidth: 5,
-      borderColor: '#c98302',
-      alignItems: 'center',
-      justifyContent: 'center',
+  UndoButton: {
+    flex: 1,
+    backgroundColor: '#ffae19',
+    borderRadius: 7,
+    borderBottomWidth: 5,
+    borderColor: '#c98302',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-      SpeakerButton: {
-        flex: 1,
-      borderRadius: 7,
-      borderBottomWidth: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
+  SpeakerButton: {
+    flex: 1,
+    borderRadius: 7,
+    borderBottomWidth: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-      AmpButton: {
-        flex: 1,
-      borderRadius: 7,
-      borderBottomWidth: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
+  AmpButton: {
+    flex: 1,
+    borderRadius: 7,
+    borderBottomWidth: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-      PrematchFont: {
-        fontFamily: 'Helvetica-Light',
-      fontSize: 20
+  IntakeButton: {
+    flex: 1,
+    borderRadius: 7,
+    borderBottomWidth: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-      PrematchButtonFont: {
-        color: 'white',
-      fontSize: 25
+  PrematchFont: {
+    fontFamily: 'Helvetica-Light',
+    fontSize: 20
+  },
+  PrematchButtonFont: {
+    color: 'white',
+    fontSize: 25
   },//yo wsg if u readin this u a tru g :))))
   //thx bruh :)))
 });
 
 const mapStateToProps = (state) => state;
 const mapDispatchToProps = (dispatch) => ({
-        setCurrentMatchData: (newMatchData) =>
-      dispatch({
-        type: Types.SET_CURRENT_MATCH_DATA,
+  setCurrentMatchData: (newMatchData) =>
+    dispatch({
+      type: Types.SET_CURRENT_MATCH_DATA,
       payload: {
         newMatchData,
       },
     }),
 });
 
-      const connectComponent = connect(mapStateToProps, mapDispatchToProps);
-      export default connectComponent(Teleop);
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+export default connectComponent(Teleop);
+
