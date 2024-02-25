@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { Modal, View, TouchableOpacity, Text, Image, Switch } from 'react-native';
-import { connect } from 'react-redux';
-import * as Types from '../store/types';
 
 function ShotSuccessModal(props) {
-  const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
   const [amplified, setAmplified] = useState(false);
 
   return(
@@ -53,4 +50,4 @@ function ShotSuccessModal(props) {
   )
 }
 
-  export default ShotSuccessModal;
+export default ShotSuccessModal;
