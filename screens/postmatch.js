@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity } from "react-native";
-import { ButtonGroup, Slider } from 'react-native-elements';
+import { Slider } from 'react-native-elements';
 import { connect } from "react-redux";
 import * as Types from "../store/types";
 import { useNavigation } from '@react-navigation/native';

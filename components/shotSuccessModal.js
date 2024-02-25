@@ -53,16 +53,4 @@ function ShotSuccessModal(props) {
   )
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-    setCurrentMatchData: newMatchData =>
-    dispatch({
-      type: Types.SET_CURRENT_MATCH_DATA,
-      payload: {
-          newMatchData,
-      },
-      }),
-       
-  });
-  const connectComponent = connect(mapStateToProps, mapDispatchToProps);
-  export default connectComponent(ShotSuccessModal);
+  export default ShotSuccessModal;

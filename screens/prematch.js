@@ -13,7 +13,6 @@ function Prematch(props) {
     const [currentRobotPosition, setCurrentRobotPosition] = useState("");
     const [currentRobotPositionName, setCurrentRobotPositionName] = useState("");
     const [fieldOrientation, setFieldOrientation] = useState(props.eventReducer.fieldOrientation);
-    const [key, setKey] = useState(null);
     const [isEnabled, setIsEnabled] = useState(false);
 
     const navigation = useNavigation(); 

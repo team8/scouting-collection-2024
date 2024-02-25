@@ -106,7 +106,6 @@ function Auto(props) {
       ></ImageBackground>
       }
 
-      {/* empty column */}
       <View style={{ flex: 1 }}>
 
         <View
