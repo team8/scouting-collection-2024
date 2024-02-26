@@ -13,6 +13,7 @@ import Blink from '../components/blink';
 import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
+import IntakeLocationModal from "../components/teleop_modal";
 
 
 function Teleop(props) {
@@ -29,6 +30,10 @@ function Teleop(props) {
   const [modalType, setModalType] = useState('');
 
   const [teleopActions, setTeleopActions] = useState([]);
+
+  const [intakeModalVisible, setIntakeModalVisible] = useState(false);
+  const [groundIntakes, setGroundIntakes] = useState(0);
+  const [substationIntakes, setSubstationIntakes] = useState(0);
 
   const alliance = props.eventReducer.alliance;
   const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
@@ -66,10 +71,25 @@ function Teleop(props) {
       case 'teleopAmp': setAmpNotes(ampNotes-1); break;
       case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes-1); break;
       case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes-1); break;
+      case 'ground': setGroundIntakes(groundIntakes-1); break;
+      case 'substation': setSubstationIntakes(substationIntakes-1); break;
       default: if(teleopActions.length != 0) console.log('Wrong teleopAction has been undone');
     }
 
     teleopActions.pop();
+  }
+
+  const addIntakeLocation = (location) => {
+    let localMatchData = matchData;
+    localMatchData.teleopActions.push(location);
+
+    if (location=="ground") setGroundIntakes(groundIntakes+1);
+    else setSubstationIntakes(substationIntakes+1);
+
+    props.setCurrentMatchData(localMatchData);
+    setIntakeModalVisible(false);
+
+    setTeleopActions(...location);
   }
 
   const addAction = (action) => {
@@ -97,11 +117,19 @@ function Teleop(props) {
       addAction={addAction}
       />
 
+      <IntakeLocationModal
+        addIntakeLocation={addIntakeLocation}
+        intakeModalVisible={intakeModalVisible}
+        setIntakeModalVisible={setIntakeModalVisible}
+      />
+
       {(fieldOrientation == 1) &&
-      <ImageBackground
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => setIntakeModalVisible(true)}>
+          <ImageBackground
         style={{ flex: 1 }}
         source={outtakeImages[fieldOrientation][alliance]}
       ></ImageBackground>
+          </TouchableOpacity>
       }
 
       {/* empty column */}
@@ -125,7 +153,10 @@ function Teleop(props) {
             <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes}</Text>
             <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes}</Text>
           </View>
-
+          <View style={{ flex: 0.3, alignItems: 'center' , borderColor: "red", borderWidth: 0}}>
+            <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
+            <Text style={{ fontSize: 20 }}>Substation Intakes: {substationIntakes}</Text>
+          </View>
         </View>
 
         <View
@@ -161,10 +192,12 @@ function Teleop(props) {
       </View>
 
       {(fieldOrientation == 2) &&
-      <ImageBackground
-        style={{ flex: 1 }}
-        source={outtakeImages[fieldOrientation][alliance]}
-      ></ImageBackground>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => setIntakeModalVisible(true)}>
+            <ImageBackground
+                style={{ flex: 1 }}
+                source={outtakeImages[fieldOrientation][alliance]}
+            ></ImageBackground>
+          </TouchableOpacity>
       }
 
     </View>
