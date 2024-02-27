@@ -27,11 +27,13 @@ function IntakeLocationModal(props) {
 
             <TouchableOpacity style={{ backgroundColor: '#8a8179', borderRadius: 10, padding: 10, marginHorizontal: 20, marginBottom: 25, marginTop: 30 }} onPress={() => {
              
-       
+              props.addIntakeLocation("substation")
               props.setIntakeModalVisible(!props.intakeModalVisible);
             }}><Text style={{ alignSelf: 'center', fontSize: 20, paddingHorizontal: 130, paddingVertical: 20 }}>Substation</Text></TouchableOpacity>
 
             <TouchableOpacity style={{ backgroundColor: '#995a26', borderRadius: 10, padding: 10, marginHorizontal: 20, marginBottom: 25 }} onPress={() => {
+              props.addIntakeLocation("ground")
+
               props.setIntakeModalVisible(!props.intakeModalVisible);
             }}><Text style={{ alignSelf: 'center', fontSize: 20, paddingHorizontal: 130, paddingVertical: 20 }}>Ground</Text></TouchableOpacity>
 
