@@ -236,14 +236,6 @@ function Teleop(props) {
         setIntakeModalVisible={setIntakeModalVisible}
       >
 
-        {(fieldOrientation == 1) &&
-          <TouchableOpacity style={{ flex: 1 }} onPress={() => setIntakeModalVisible(true)}>
-            <ImageBackground
-              style={{ flex: 1 }}
-              source={outtakeImages[fieldOrientation][alliance]}
-            ></ImageBackground>
-          </TouchableOpacity>
-        }
 
         {/* empty column */}
         <View style={{ flex: 1 }}>
