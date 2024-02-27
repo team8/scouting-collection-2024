@@ -5,8 +5,8 @@
         {"id": 3, "left": 200, "top": 450, "paddingLeft": 150, "paddingRight": 180, "padding": 70, "name": "outside"}
     ],
     "two_red": [
-        {"id": 1, "left": 66, "top": 420, "paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
-        {"id": 2, "left": 66, "top": 180, "paddingRight": 25, "padding": 118, "name": "middle"},
+        {"id": 1, "left": 156, "top": 420, "paddingLeft": 35, "paddingRight": 100, "padding": 110, "name": "inside"},
+        {"id": 2, "left": 156, "top": 180, "paddingRight": 25, "padding": 118, "name": "middle"},
         {"id": 3, "left": 66, "top": 35, "paddingLeft": 150, "paddingRight": 180, "padding": 70, "name": "outside"}
     ],
     "one_blue": [
