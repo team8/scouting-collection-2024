@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet, TextInput, Switch, TouchableOpacity, ImageBackground} from 'react-native';
-import {Button, ButtonGroup, Slider} from 'react-native-elements';
+import {View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
+import { ButtonGroup } from 'react-native-elements';
 import { connect } from 'react-redux';
 import * as Types from '../store/types';
 import stage from '../stage';

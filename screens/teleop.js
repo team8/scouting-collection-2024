@@ -5,11 +5,9 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  Switch,
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Types from '../store/types';
-import Blink from '../components/blink';
 import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
