@@ -226,20 +226,7 @@ function Auto(props) {
 
           }}
         >
-          <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}
-            onPress={() => {
-              setShotModalVisible(!shotModalVisible);
-              setModalType('Speaker');
-            }}>
-            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Speaker</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
-            onPress={() => {
-              setModalType('Amp');
-              setShotModalVisible(!shotModalVisible);
-            }}>
-            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Amp</Text>
-          </TouchableOpacity>
+          
           <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
           </TouchableOpacity>
