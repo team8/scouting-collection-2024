@@ -80,6 +80,7 @@ function Auto(props) {
   }
 
   const undo = () => {
+    setCoordinatesList(coordinatesList.pop())
     switch (autoActions[autoActions.length - 1]) {
       case 'autoSpeaker': setSpeakerNotes(speakerNotes - 1); break;
       case 'autoAmp': setAmpNotes(ampNotes - 1); break;
