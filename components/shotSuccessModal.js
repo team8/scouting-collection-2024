@@ -15,7 +15,13 @@ function ShotSuccessModal(props) {
         <View style={{ margin: 20, backgroundColor: 'white', padding: 35, borderRadius: 20, alignItems: 'center' }}>
 
           <TouchableOpacity style={{ backgroundColor: '#e83149', height: 30, width: 30, borderRadius: 40, alignSelf: 'flex-start', justifyContent: 'center' }} 
-          onPress={() => { props.setShotModalVisible(!props.shotModalVisible) }}>
+          onPress={() => { 
+            var temp = props.coordinatesList
+            temp.pop()
+            props.setCoordinatesList(temp)
+            
+            props.setShotModalVisible(!props.shotModalVisible)
+             }}>
             <Text style={{ alignSelf: 'center', color: 'white', fontSize: 15 }}>X</Text>
           </TouchableOpacity>
           {/* Button to close modal */}

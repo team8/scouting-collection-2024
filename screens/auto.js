@@ -13,6 +13,7 @@ import Blink from '../components/blink';
 import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
+import ShotLocationModal from '../components/shotLocationModal';
 
 
 function Auto(props) {
@@ -26,14 +27,20 @@ function Auto(props) {
 
   const [shotModalVisible, setShotModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
+  const [shotLocationModalVisible, setShotLocationModalVisible] = useState(false)
 
   const [autoActions, setAutoActions] = useState([]);
+  const [coordinatesList, setCoordinatesList] = useState([]);
+
+
+  const [heatmap, setHeatmap] = useState([]);
+
 
   const alliance = props.eventReducer.alliance;
   const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
   const ampColor = (alliance === 'red') ? '#DA4A19' : '#34BFA1';
   const ampBorderColor = (alliance === 'red') ? '#C03D25' : '#289E85';
-  
+
   const fieldOrientation = props.eventReducer.fieldOrientation;
 
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
@@ -48,6 +55,18 @@ function Auto(props) {
       title: `Auto | ${matchData.team}`
     })
   }, [])
+  useEffect(() => {
+
+    var heatmapTemp = []
+    for (var i = 0; i < 10; i++) {
+      heatmapTemp.push([])
+      for (var j = 0; j < 10; j++) {
+        heatmapTemp[i].push(0)
+      }
+    }
+    console.log(heatmapTemp)
+    setHeatmap(heatmapTemp)
+  }, [])
 
   const navigate = () => {
     matchData.speakerNotes = speakerNotes;
@@ -55,17 +74,18 @@ function Auto(props) {
     matchData.mobility = mobility;
     matchData.autoFailedSpeakerNotes = failedSpeakerNotes;
     matchData.autoFailedAmpNotes = failedAmpNotes;
+    matchData.autoCoordinatesList = coordinatesList;
     props.setCurrentMatchData(matchData);
     navigation.navigate('teleop');
   }
 
   const undo = () => {
-    switch(autoActions[autoActions.length-1]) {
-      case 'autoSpeaker': setSpeakerNotes(speakerNotes-1); break;
-      case 'autoAmp': setAmpNotes(ampNotes-1); break;
-      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes-1); break;
-      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes-1); break;
-      default: if(autoActions.length != 0) console.log('Wrong autoAction has been undone');
+    switch (autoActions[autoActions.length - 1]) {
+      case 'autoSpeaker': setSpeakerNotes(speakerNotes - 1); break;
+      case 'autoAmp': setAmpNotes(ampNotes - 1); break;
+      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); break;
+      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
+      default: if (autoActions.length != 0) console.log('Wrong autoAction has been undone');
     }
 
     autoActions.pop();
@@ -75,33 +95,94 @@ function Auto(props) {
     let temp = autoActions;
     temp.push(action);
 
-    switch(action) {
-      case 'autoSpeaker': setSpeakerNotes(speakerNotes+1); break;
-      case 'autoAmp': setAmpNotes(ampNotes+1); break;
-      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes+1); break;
-      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
+    switch (action) {
+      case 'autoSpeaker': setSpeakerNotes(speakerNotes + 1); break;
+      case 'autoAmp': setAmpNotes(ampNotes + 1); break;
+      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes + 1); break;
+      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes + 1); break;
     }
     setAutoActions(temp);
+  }
+
+  const ScoringButtons = () => {
+    return (
+      <>
+        <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, }]}
+          onPress={() => {
+            setShotModalVisible(!shotModalVisible);
+            setModalType('Speaker');
+            setShotLocationModalVisible(!shotLocationModalVisible)
+          }}>
+          <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Speaker</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
+          onPress={() => {
+            setModalType('Amp');
+            setShotModalVisible(!shotModalVisible);
+            setShotLocationModalVisible(!shotLocationModalVisible);
+          }}>
+          <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Amp</Text>
+        </TouchableOpacity>
+      </>
+    )
   }
 
   return (
     <View style={autoStyles.mainContainer}>
 
-      <ShotSuccessModal 
-      shotModalVisible={shotModalVisible} 
-      setShotModalVisible={setShotModalVisible} 
-      matchPhase='auto' modalType={modalType} 
-      autoActions={autoActions} 
-      setAutoActions={setAutoActions}
-      addAction={addAction}
+      <ShotSuccessModal
+        shotModalVisible={shotModalVisible}
+        setShotModalVisible={setShotModalVisible}
+        matchPhase='auto' modalType={modalType}
+        autoActions={autoActions}
+        setAutoActions={setAutoActions}
+        addAction={addAction}
       />
 
-      {(fieldOrientation == 1) &&
+      <ShotLocationModal
+        shotLocationModalVisible={shotLocationModalVisible}
+        setShotLocationModalVisible={setShotLocationModalVisible}
+        speakerButtonStyle={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, height: 100 }]}
+        ScoringButtons={ScoringButtons}
+        coordinatesList={coordinatesList}
+        setCoordinatesList={setCoordinatesList}
+
+      />
+
       <ImageBackground
-        style={{ flex: 0.7 }}
+        style={{ flex: 0.7, justifyContent: 'center', alignSelf: fieldOrientation == 1 ? "flex-start" : "flex-end" }}
         source={outtakeImages[fieldOrientation][alliance]}
-      ></ImageBackground>
-      }
+      >
+
+
+        <View style={{ width: "100%", alignSelf: "center" }}>
+          {heatmap && [...Array(heatmap.length).keys()].map((y) => {
+
+
+            return (
+              <View style={{ flexDirection: 'row', width: "100%", height: "10%" }}>
+                {heatmap[y] && [...Array(heatmap[y].length).keys()].map((x) => {
+
+                  return (
+                    <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
+                      console.log([x, y])
+                      setCoordinatesList([...coordinatesList, [x, y]])
+                      setShotLocationModalVisible(!shotLocationModalVisible)
+
+                    }}>
+                      <Text></Text>
+                      {/* ^ Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
+                    </TouchableOpacity>
+                  )
+                })}
+
+
+              </View>
+            )
+
+          })}
+        </View>
+      </ImageBackground>
 
       {/* empty column */}
       <View style={{ flex: 0.3 }}>
@@ -141,21 +222,21 @@ function Auto(props) {
             alignItems: 'center',
             justifyContent: 'center',
             paddingBottom: 10,
-            
+
           }}
         >
           <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}
             onPress={() => {
-            setShotModalVisible(!shotModalVisible);
-            setModalType('Speaker');
-          }}>
+              setShotModalVisible(!shotModalVisible);
+              setModalType('Speaker');
+            }}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Speaker</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]} 
-          onPress={() => {
-            setModalType('Amp');
-            setShotModalVisible(!shotModalVisible);
-          }}>
+          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
+            onPress={() => {
+              setModalType('Amp');
+              setShotModalVisible(!shotModalVisible);
+            }}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Amp</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
@@ -168,12 +249,6 @@ function Auto(props) {
         </View>
       </View>
 
-      {(fieldOrientation == 2) &&
-      <ImageBackground
-        style={{ flex: 0.7 }}
-        source={outtakeImages[fieldOrientation][alliance]}
-      ></ImageBackground>
-      }
 
     </View>
   );

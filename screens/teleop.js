@@ -16,6 +16,8 @@ import ShotSuccessModal from '../components/shotSuccessModal';
 import IntakeLocationModal from '../components/intakeLocationModal';
 import ShotLocationModal from '../components/shotLocationModal';
 import { Button } from 'react-native-elements';
+// import Heatmap from '../components/heatmap';
+// import ScoringButtons from '../components/scoringButtons';
 
 
 function Teleop(props) {
@@ -35,7 +37,8 @@ function Teleop(props) {
   const [modalType, setModalType] = useState('');
 
   const [teleopActions, setTeleopActions] = useState([]);
-  const [intakeActions, setIntakeActions] = useState([])
+  const [intakeActions, setIntakeActions] = useState([]);
+  const [coordinatesList, setCoordinatesList] = useState([]);
 
   const alliance = props.eventReducer.alliance;
   const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
@@ -47,12 +50,15 @@ function Teleop(props) {
   const navigation = useNavigation();
 
 
-  const [heatmap, setHeatmap] = useState([]);
-
   useEffect(() => {
     navigation.setOptions({
       title: `Teleop | ${matchData.team}`
     })
+  }, [])
+
+  const [heatmap, setHeatmap] = useState([]);
+  useEffect(() => {
+
     var heatmapTemp = []
     for (var i = 0; i < 10; i++) {
       heatmapTemp.push([])
@@ -64,16 +70,20 @@ function Teleop(props) {
     setHeatmap(heatmapTemp)
   }, [])
 
+
+
   const navigate = () => {
     matchData.speakerNotes = speakerNotes;
     matchData.ampNotes = ampNotes;
     matchData.teleopFailedSpeakerNotes = failedSpeakerNotes;
     matchData.teleopFailedAmpNotes = failedAmpNotes;
+    matchData.teleopCoordinatesList = coordinatesList;
     props.setCurrentMatchData(matchData);
     navigation.navigate('endgame');
   }
 
   const undo = () => {
+    setCoordinatesList(coordinatesList.pop())
     switch (teleopActions[teleopActions.length - 1]) {
       case 'teleopSpeaker': setSpeakerNotes(speakerNotes - 1); break;
       case 'teleopAmp': setAmpNotes(ampNotes - 1); break;
@@ -99,29 +109,29 @@ function Teleop(props) {
   }
 
   const ScoringButtons = () => {
-    return(
+    return (
       <>
-      <TouchableOpacity style={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, }]}
-      onPress={() => {
-        setShotModalVisible(!shotModalVisible);
-        setModalType('Speaker');
-        setShotLocationModalVisible(!shotLocationModalVisible)
-
-      }}>
-      <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Speaker</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={[teleopStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
-      onPress={() => {
-        setModalType('Amp');
-        setShotModalVisible(!shotModalVisible);
-        setShotLocationModalVisible(!shotLocationModalVisible);
-      }}>
-      <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Amp</Text>
-    </TouchableOpacity>
-    </>
+        <TouchableOpacity style={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, }]}
+          onPress={() => {
+            setShotModalVisible(!shotModalVisible);
+            setModalType('Speaker');
+            setShotLocationModalVisible(!shotLocationModalVisible)
+          }}>
+          <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Speaker</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[teleopStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
+          onPress={() => {
+            setModalType('Amp');
+            setShotModalVisible(!shotModalVisible);
+            setShotLocationModalVisible(!shotLocationModalVisible);
+          }}>
+          <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Amp</Text>
+        </TouchableOpacity>
+      </>
     )
   }
 
+  
   return (
     <View style={teleopStyles.mainContainer}>
 
@@ -132,57 +142,68 @@ function Teleop(props) {
         teleopActions={teleopActions}
         setTeleopActions={setTeleopActions}
         addAction={addAction}
+        coordinatesList={coordinatesList}
+        setCoordinatesList={setCoordinatesList}
       />
       <IntakeLocationModal
         intakeModalVisible={intakeModalVisible}
         setIntakeModalVisible={setIntakeModalVisible}
-
         intakeActions={intakeActions}
         setIntakeActions={setIntakeActions}
-        
+
 
       />
 
       <ShotLocationModal
         shotLocationModalVisible={shotLocationModalVisible}
         setShotLocationModalVisible={setShotLocationModalVisible}
-        speakerButtonStyle={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, height: 100}]}
+        speakerButtonStyle={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, height: 100 }]}
         ScoringButtons={ScoringButtons}
+        coordinatesList={coordinatesList}
+        setCoordinatesList={setCoordinatesList}
+
       />
 
+      {/* <Text style={{alignSelf: (fieldOrientation == 1) ? "flex-start": "flex-end"}}>Test</Text> */}
 
 
-      {(fieldOrientation == 1) &&
 
-        <ImageBackground
-          style={{ flex: 0.7, justifyContent: 'center', borderWidth: 5 }}
-          source={outtakeImages[fieldOrientation][alliance]}
 
-        >
 
-          {/* <Text>Tetetete</Text>
-            <Text style={{textAlign: 'center'}}>jlbaskjdbflsd</Text> */}
-          <View style={{ flex: 0.7, flexDirection: "column", borderColor: "red", borderWidth: 1 }}>
-            <Text>Tetetete</Text>
-            <Text style={{ textAlign: 'center' }}>jlbaskjdbflsd</Text>
-          </View>
-          {/* {heatmap.map((y) => {
-              return(
-                <Flex>
-                  {heatmap[y].map((x) => {
-                    return(
-                      <TouchableOpacity style={{borderColor: "black", borderWidth: 1}} onPress={()=>{console.log([x, y])}}>
+    <ImageBackground
+        style={{ flex: 0.7, justifyContent: 'center', alignSelf: fieldOrientation == 1 ? "flex-start" : "flex-end"}}
+        source={outtakeImages[fieldOrientation][alliance]}
+      >
 
-                      </TouchableOpacity>
-                    )
-                  })}
-                </Flex>
-              )
-            
-            })} */}
-        </ImageBackground>
 
-      }
+        <View style={{ width: "100%", alignSelf: "center" }}>
+          {heatmap && [...Array(heatmap.length).keys()].map((y) => {
+
+
+            return (
+              <View style={{ flexDirection: 'row', width: "100%", height: "10%" }}>
+                {heatmap[y] && [...Array(heatmap[y].length).keys()].map((x) => {
+
+                  return (
+                    <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
+                      console.log([x, y])
+                      setCoordinatesList([...coordinatesList, [x, y]])
+                      setShotLocationModalVisible(!shotLocationModalVisible)
+
+                    }}>
+                      <Text></Text>
+                      {/* ^ Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
+                    </TouchableOpacity>
+                  )
+                })}
+
+
+              </View>
+            )
+
+          })}
+        </View>
+      </ImageBackground>
 
 
       <View style={{ flex: 0.3 }}>
@@ -217,12 +238,14 @@ function Teleop(props) {
 
           }}
         >
-          <TouchableOpacity style={[teleopStyles.IntakeButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]}>
+          <TouchableOpacity style={[teleopStyles.IntakeButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]} onPress={() => { setIntakeModalVisible(true) }}>
             <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Intake</Text>
           </TouchableOpacity>
+
           <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
             <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
           </TouchableOpacity>
+
           <TouchableOpacity style={[teleopStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
             <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Continue to Endgame</Text>
           </TouchableOpacity>
@@ -230,46 +253,11 @@ function Teleop(props) {
         </View>
       </View>
 
-      {(fieldOrientation == 2) &&
+      {/* {fieldOrientation == 2 && 
+        <Heatmap
 
-        <ImageBackground
-          style={{ flex: 0.7, justifyContent: 'center', }}
-          source={outtakeImages[fieldOrientation][alliance]}
-        >
-
-          {/* <View style={{ flexDirection: "column"}}>
-               <Text style={{textAlign: 'center'}}>Tetetete</Text>
-               <Text style={{textAlign: 'center'}}>jlbaskjdbflsd</Text>
-             </View> */}
-          <View style={{ width: "100%", alignSelf: "center" }}>
-            {heatmap && [...Array(heatmap.length).keys()].map((y) => {
-
-
-              return (
-                <View style={{ flexDirection: 'row', width: "100%", height: "10%" }}>
-                  {heatmap[y] && [...Array(heatmap[y].length).keys()].map((x) => {
-
-                    return (
-                      <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                        console.log([x, y])
-                        setShotLocationModalVisible(!shotLocationModalVisible)
-
-                      }}>
-                        <Text></Text>
-                        {/* Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
-                      </TouchableOpacity>
-                    )
-                  })}
-
-
-                </View>
-              )
-
-            })}
-          </View>
-        </ImageBackground>
-
-      }
+        />
+}       */}
 
     </View>
   );
