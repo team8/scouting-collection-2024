@@ -22,7 +22,6 @@ function Teleop(props) {
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
   const [speakerNotes, setSpeakerNotes] = useState(0);
-  const [amplifiedSpeakerNotes, setAmplifiedSpeakerNotes] = useState(0);
   const [ampNotes, setAmpNotes] = useState(0);
 
   const [failedSpeakerNotes, setFailedSpeakerNotes] = useState(0);
@@ -91,7 +90,6 @@ function Teleop(props) {
     if (teleopActions.length != 0)
       switch (teleopActions[teleopActions.length - 1]) {
         case 'teleopSpeaker': setSpeakerNotes(speakerNotes - 1); break;
-        case 'teleopAmplifiedSpeaker': setAmplifiedSpeakerNotes(amplifiedSpeakerNotes - 1); break;
         case 'teleopAmp': setAmpNotes(ampNotes - 1); break;
         case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); break;
         case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
@@ -123,7 +121,6 @@ function Teleop(props) {
 
     switch (action) {
       case 'teleopSpeaker': setSpeakerNotes(speakerNotes + 1); break;
-      case 'teleopAmplifiedSpeaker': setAmplifiedSpeakerNotes(amplifiedSpeakerNotes + 1); break;
       case 'teleopAmp': setAmpNotes(ampNotes + 1); break;
       case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes + 1); break;
       case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes + 1); break;
@@ -257,7 +254,6 @@ function Teleop(props) {
             <View style={{ flex: 0.3, alignItems: 'center' }}>
               <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes + matchData.autoSpeakerNotes}</Text>
               <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes + matchData.autoAmpNotes}</Text>
-              <Text style={{ fontSize: 20, color: '#10b53e' }}>Amplified Speaker Notes: {amplifiedSpeakerNotes}</Text>
             </View>
             <View style={{ flex: 0.3, alignItems: 'center', borderColor: "red", borderWidth: 0 }}>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>

@@ -36,7 +36,7 @@ function Postmatch(props) {
         matchData.climbNotes = climbNotes.replace(/ /g, '>').replace(/,/g, '<');
         matchData.coopertition = coopertition;
         matchData.died = robotDied;
-        matchData.tipped = robotTipped;
+
         matchData.driverRating = driverRating;
         matchData.defenseRating = defenseRating;
         matchData.intakeRating = intakeRating;
@@ -67,7 +67,7 @@ function Postmatch(props) {
                         borderWidth: 0,
                         marginBottom: 20
                     }}>
-                    <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Coorpetition Bonus</Text>
+                    <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Coopertition Bonus</Text>
                     <Switch
                         style={{ flex: 0.7 }}
                         onValueChange={(value) => setCoopertition(value)}
@@ -86,7 +86,7 @@ function Postmatch(props) {
                         onChangeText={(text) => setClimbNotes(text)}
                     />
                 </View>
-                <View style={{flex: 0.1, marginLeft: 25}}>
+                <View style={{flex: 0.2, marginLeft: 25, alignItems: "center"}}>
                     <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Robot Died</Text>
                     <Switch
                         style={{flex: 0.7}}
@@ -94,14 +94,7 @@ function Postmatch(props) {
                         value={robotDied}
                     />
                 </View>
-                <View style={{flex: 0.1, marginLeft: 25}}>
-                    <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Tipped</Text>
-                    <Switch
-                        style={{flex: 0.7}}
-                        onValueChange = {(value) => setRobotTipped(value)}
-                        value={robotTipped}
-                    />
-                </View>
+                
             </View>
             <View style={postmatchStyles.Row}>
                 <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, textAlign: "center"}]}>Driving</Text>
