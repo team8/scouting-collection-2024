@@ -27,15 +27,7 @@ function ShotSuccessModal(props) {
 
           <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
 
-            {(props.modalType == 'Speaker') && (props.matchPhase == 'teleop') &&
-              <Text style={[{ fontSize: 22, alignSelf: 'center', marginBottom: 20 }]}>Amplified</Text>}
-            {(props.modalType == 'Speaker') && (props.matchPhase == 'teleop') &&
-              <Switch
-                style={{ alignSelf: 'center' }}
-                onValueChange={(value) => setAmplified(value)}
-                value={amplified}
-              />}
-
+           
             <TouchableOpacity style={{ backgroundColor: '#85e882', borderRadius: 10, padding: 10, marginHorizontal: 20, marginBottom: 25, marginTop: 30 }} onPress={() => {
               if(props.modalType == 'Speaker' && amplified) { props.addAction(props.matchPhase + 'Amplified' + props.modalType); }
               else props.addAction(props.matchPhase + props.modalType);
