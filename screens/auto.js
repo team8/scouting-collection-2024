@@ -137,8 +137,9 @@ function Auto(props) {
         setShotModalVisible={setShotModalVisible}
         matchPhase='auto' modalType={modalType}
         autoActions={autoActions}
-        setAutoActions={setAutoActions}
         addAction={addAction}
+        coordinatesList={coordinatesList}
+        setCoordinatesList={setCoordinatesList}
       />
 
       <ShotLocationModal

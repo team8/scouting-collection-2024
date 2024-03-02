@@ -11,7 +11,6 @@ function Postmatch(props) {
     const [coopertition, setCoopertition] = useState(false);
     const [climbNotes, setClimbNotes] = useState("");
     const [robotDied, setRobotDied] = useState(false);
-    const [robotTipped, setRobotTipped] = useState(false);
     const [driverRating, setDriverRating] = useState(0);
     const [defenseRating, setDefenseRating] = useState(0);
     const [intakeRating, setIntakeRating] = useState(0);
@@ -48,7 +47,7 @@ function Postmatch(props) {
     return (
         <View style={{ flex: 1, marginHorizontal: 40 }}>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.Font, {fontSize: 22, flex: 0.205}]}>Notes</Text>
+                <Text style={[postmatchStyles.Font, {fontSize: 22, flex: 0.2}]}>Notes</Text>
                 <View style={[postmatchStyles.InputContainer, {flex: 0.9}]}>
                     <TextInput
                         style={postmatchStyles.TextInputContainer}
@@ -76,8 +75,8 @@ function Postmatch(props) {
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.Font, {fontSize: 22, flex: 0.15}]}>Climb Notes</Text>
-                <View style={[postmatchStyles.InputContainer, {flex: 0.65}]}>
+                <Text style={[postmatchStyles.Font, {fontSize: 21, flex: 0.143}]}>Climb Notes</Text> {/* these 3 decimal places were with trial & error maybe you can find better way */}
+                <View style={[postmatchStyles.InputContainer, {flex: 0.642}]}>
                     <TextInput
                         style={postmatchStyles.TextInputContainer}
                         placeholder="Topics to Note: Time at which robot began climbing, ease of assisted climb, why robot failed, etc.. Max Char: 150"
@@ -87,7 +86,7 @@ function Postmatch(props) {
                     />
                 </View>
                 <View style={{flex: 0.2, marginLeft: 25, alignItems: "center"}}>
-                    <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Robot Died</Text>
+                    <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Robot Died/Tipped</Text>
                     <Switch
                         style={{flex: 0.7}}
                         onValueChange={(value) => setRobotDied(value)}

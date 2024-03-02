@@ -39,15 +39,21 @@ function Prematch(props) {
         setIsEnabled(!isEnabled);
     }
 
+    const capitaliseFirstLetter = (word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+
     const setPosition = (key, name) => {
         setCurrentRobotPosition(key);
-        setCurrentRobotPositionName(name);
+        setCurrentRobotPositionName(capitaliseFirstLetter(name));
     }
 
     const toggleFieldOrientation = () => {
         setFieldOrientation(1+Number(!(fieldOrientation-1))); 
         //minus 1, so it should be 1 or 0, switch from 1->0 or 0->1 via "not" operator, add 1 again
     }
+    
+    
 
     const navigate = () => {
         if (!name || !currentRobotPosition) {
@@ -102,12 +108,12 @@ function Prematch(props) {
                 <View style={{ flex: 0.4, marginLeft: 50, marginBottom: -50}}>
                     <View style={{ flex: 0.7, alignItems: 'center' }}>
                         <Text style={[prematchStyles.Font, { fontWeight: 'bold' }]}>Starting Position</Text>
-                        <Text style={[prematchStyles.Font, { fontSize: 18 }, currentRobotPosition == '' ? { color: '#a3a3a3' } : {}]}>{currentRobotPositionName}</Text>
+                        <Text style={[prematchStyles.Font, { fontSize: 23 }, currentRobotPosition == '' ? { color: '#a3a3a3' } : {}]}>{currentRobotPositionName}</Text>
                     </View>
                     <View style={{ flex: 0.3 }}>
                         <TouchableOpacity style={[prematchStyles.NextButton, { backgroundColor: '#ffae19', borderColor: '#c98302', marginBottom: 10 }]} onPress={() => toggleFieldOrientation()}>
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={[prematchStyles.Font, prematchStyles.ButtonFont, { fontSize: 18 }]}>Toggle Field Orientation</Text>
+                                <Text style={[prematchStyles.Font, prematchStyles.ButtonFont]}>Toggle Field Orientation</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={prematchStyles.NextButton} onPress={() => navigate()}>

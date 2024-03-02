@@ -1,17 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Modal, View, TouchableOpacity, Text, Image, Switch } from 'react-native';
-import { connect } from 'react-redux';
-import * as Types from '../store/types';
+import { Modal, View, TouchableOpacity, Text, Image } from 'react-native';
 
 function ShotLocationModal(props) {
   const ScoringButtons = props.ScoringButtons;
 
-  
   return (
     <Modal style={{ width: 90, height: 30 }} transparent={true} visible={props.shotLocationModalVisible} onRequestClose={() => {
       props.setShotLocationModalVisible(!props.shotLocationModalVisible);
     }}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={{ margin: 20, backgroundColor: 'white', padding: 35, borderRadius: 20, alignItems: 'center' }}>
 
           <TouchableOpacity style={{ backgroundColor: '#e83149', height: 30, width: 30, borderRadius: 40, alignSelf: 'flex-start', justifyContent: 'center' }}
@@ -33,14 +29,10 @@ function ShotLocationModal(props) {
             alignItems: 'center',
             justifyContent: 'center',
             paddingBottom: 10,
-
           }}>
 
+            <ScoringButtons style={{alignSelf: "center"}}/>
 
-
-            <ScoringButtons style={{alignSelf: "center"}}
-            
-            />
           </View>
 
         </View>
