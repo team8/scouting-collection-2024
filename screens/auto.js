@@ -75,6 +75,7 @@ function Auto(props) {
     matchData.autoFailedSpeakerNotes = failedSpeakerNotes;
     matchData.autoFailedAmpNotes = failedAmpNotes;
     matchData.autoCoordinatesList = coordinatesList;
+    matchData.autoActions = autoActions;
     props.setCurrentMatchData(matchData);
     navigation.navigate('teleop');
   }

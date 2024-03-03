@@ -80,7 +80,9 @@ function Teleop(props) {
     matchData.teleopCoordinatesList = coordinatesList;
     matchData.groundIntakes = groundIntakes;
     matchData.substationIntakes = substationIntakes;
+    matchData.teleopActions = teleopActions;
     props.setCurrentMatchData(matchData);
+
     navigation.navigate('endgame');
   }
 

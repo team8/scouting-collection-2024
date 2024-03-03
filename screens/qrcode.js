@@ -25,6 +25,7 @@ function QRCodeScreen(props) {
 
     const encode = () => {
         let codeData = matchData;
+        console.log(matchData);
         let localQrString = encodeStringData(codeData);
         setQrString(localQrString)
     }
