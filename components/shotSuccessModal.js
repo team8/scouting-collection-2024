@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, View, TouchableOpacity, Text, Image, Switch } from 'react-native';
+import { Modal, View, TouchableOpacity, Text, Image } from 'react-native';
 
 function ShotSuccessModal(props) {
   const [amplified, setAmplified] = useState(false);

@@ -13,10 +13,6 @@ import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
 import IntakeLocationModal from '../components/intakeLocationModal';
 import ShotLocationModal from '../components/shotLocationModal';
-import { Button } from 'react-native-elements';
-// import Heatmap from '../components/heatmap';
-// import ScoringButtons from '../components/scoringButtons';
-
 
 function Teleop(props) {
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
@@ -158,6 +154,11 @@ function Teleop(props) {
 
   return (
     <View style={teleopStyles.mainContainer}>
+      <IntakeLocationModal
+        intakeModalVisible={intakeModalVisible}
+        setIntakeModalVisible={setIntakeModalVisible}
+        addIntakeLocation={addIntakeLocation}
+      />
 
       <ShotSuccessModal
         shotModalVisible={shotModalVisible}
@@ -170,12 +171,7 @@ function Teleop(props) {
         setCoordinatesList={setCoordinatesList}
       />
 
-      <IntakeLocationModal
-        intakeModalVisible={intakeModalVisible}
-        setIntakeModalVisible={setIntakeModalVisible}
-        addIntakeLocation={addIntakeLocation}
-
-      />
+      
 
       <ShotLocationModal
         shotLocationModalVisible={shotLocationModalVisible}
@@ -184,7 +180,6 @@ function Teleop(props) {
         ScoringButtons={ScoringButtons}
         coordinatesList={coordinatesList}
         setCoordinatesList={setCoordinatesList}
-
       />
 
       {/* <Text style={{alignSelf: (fieldOrientation == 1) ? "flex-start": "flex-end"}}>Test</Text> */}
@@ -290,31 +285,31 @@ function Teleop(props) {
 
 
       </View>
-      </View>
-      );
+    </View>
+  );
 }
 
 
-      const teleopStyles = StyleSheet.create({
-        mainContainer: {
-        flex: 1,
+  const teleopStyles = StyleSheet.create({
+    mainContainer: {
+      flex: 1,
       flexDirection: 'row',
   },
-      square: {
-        width: '33%',
+    square: {
+      width: '33%',
       borderTopWidth: 1,
       borderLeftWidth: 1,
       borderColor: 'black',
       flex: 1,
       justifyContent: 'center'
   },
-      gamePieceIcon: {
-        height: '60%',
+    gamePieceIcon: {
+      height: '60%',
       width: '60%',
       alignSelf: 'center'
   },
-      NextButton: {
-        flex: 1,
+    NextButton: {
+      flex: 1,
       backgroundColor: '#2E8B57',
       borderRadius: 7,
       borderBottomWidth: 5,
@@ -322,8 +317,8 @@ function Teleop(props) {
       alignItems: 'center',
       justifyContent: 'center',
   },
-      UndoButton: {
-        flex: 1,
+    UndoButton: {
+      flex: 1,
       backgroundColor: '#ffae19',
       borderRadius: 7,
       borderBottomWidth: 5,
@@ -331,33 +326,33 @@ function Teleop(props) {
       alignItems: 'center',
       justifyContent: 'center',
   },
-      SpeakerButton: {
-        flex: 1,
+    SpeakerButton: {
+      flex: 1,
       borderRadius: 7,
       borderBottomWidth: 5,
       alignItems: 'center',
       justifyContent: 'center',
   },
-      AmpButton: {
-        flex: 1,
+    AmpButton: {
+      flex: 1,
       borderRadius: 7,
       borderBottomWidth: 5,
       alignItems: 'center',
       justifyContent: 'center',
   },
-      IntakeButton: {
-        flex: 1,
+    IntakeButton: {
+      flex: 1,
       borderRadius: 7,
       borderBottomWidth: 5,
       alignItems: 'center',
       justifyContent: 'center',
   },
-      PrematchFont: {
-        fontFamily: 'Helvetica-Light',
+    PrematchFont: {
+      fontFamily: 'Helvetica-Light',
       fontSize: 20
   },
-      PrematchButtonFont: {
-        color: 'white',
+    PrematchButtonFont: {
+      color: 'white',
       fontSize: 25
   },//yo wsg if u readin this u a tru g :))))
   //thx bruh :)))

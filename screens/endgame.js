@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet, TextInput, Switch, TouchableOpacity, ImageBackground} from 'react-native';
-import {Button, ButtonGroup, Slider} from 'react-native-elements';
+import {View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
+import { ButtonGroup } from 'react-native-elements';
 import { connect } from 'react-redux';
 import * as Types from '../store/types';
 import stage from '../stage';
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 function Endgame(props) {
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
     const alliance = props.eventReducer.alliance;
+
 
     const [traps, setTraps] = useState(0);
     const [failedTraps, setFailedTraps] = useState(0);
@@ -63,21 +64,21 @@ function Endgame(props) {
     return (
         <View style={{flexDirection:'row', flex: 1}}>
 
-            <ImageBackground style={{flex: 1, height: '100%', width:'90%'}} source={stage[alliance]}></ImageBackground>
+            <ImageBackground style={{flex: 1, height: '100%', width:'100%' }} source={stage[alliance]}></ImageBackground>
 
             <View
                 style={{
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flex: 1,
+                    flex: 1
                 }}>
 
-                <View style={{justifyContent: 'center', marginBottom: 20}}>
-                    <Text style={{ fontSize: 20, marginLeft: 30 }}>Traps: {traps}</Text>
-                    <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' , marginRight: 10}}>Failed Traps: {failedTraps}</Text>
+                <View style={{flex: 0.3, alignItems: 'center', margin: 20 }}>
+                    <Text style={{ fontSize: 20 }}>Traps: {traps}</Text>
+                    <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Traps: {failedTraps}</Text>
                 </View>
 
-                <View style={{flexDirection: 'row', marginVertical: 40, marginRight: 10}}>
+                <View style={{alignItems: 'stretch', flexDirection: 'row', marginVertical: 40, marginHorizontal: 40}}>
                     <TouchableOpacity style={[endgameStyles.SuccessfulTrapButton, { width: 300, marginBottom: 10 }]} onPress={() => addAction('trap')}>
                         <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Trap</Text>
                     </TouchableOpacity>
@@ -91,11 +92,11 @@ function Endgame(props) {
                     selectedIndex={climbStatus}
                     buttons={endgameText}
                     buttonStyle={endgameStyles.ButtonGroup}
-                    containerStyle={{height: 50, marginRight: 54}}
+                    containerStyle={{height: 50}}
                     selectedButtonStyle={{ backgroundColor: '#24a2b6', borderBottomColor: '#188191' }}
                 />
 
-                <View style={{ flexDirection:'row', paddingTop: 100, width:'42%' }}>
+                <View style={{ flexDirection:'row', paddingTop: 70, width:'42%' }}>
                     <TouchableOpacity style={[endgameStyles.UndoButton]} onPress={() => undo()}>
                         <Text style={[endgameStyles.PrematchFont, endgameStyles.PrematchButtonFont]}>Undo</Text>
                     </TouchableOpacity>
@@ -116,12 +117,17 @@ const endgameStyles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         flexDirection: 'row',
+        flexDirection: 'row',
     },
     NextButton: {
         flex: 1,
         backgroundColor: '#2E8B57',
+        backgroundColor: '#2E8B57',
         borderRadius: 7,
         borderBottomWidth: 5,
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: '#006400',
         alignItems: 'center',
         justifyContent: 'center',
@@ -131,8 +137,12 @@ const endgameStyles = StyleSheet.create({
     SuccessfulTrapButton: {
         flex: 1,
         backgroundColor: '#2E8B57',
+        backgroundColor: '#2E8B57',
         borderRadius: 7,
         borderBottomWidth: 5,
+        borderColor: '#006400',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: '#006400',
         alignItems: 'center',
         justifyContent: 'center',
@@ -148,6 +158,9 @@ const endgameStyles = StyleSheet.create({
         borderColor: '#821919',
         alignItems: 'center',
         justifyContent: 'center',
+        borderColor: '#821919',
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 100,
         width: 300,
     },
@@ -157,6 +170,8 @@ const endgameStyles = StyleSheet.create({
         borderRadius: 7,
         borderBottomWidth: 5,
         borderColor: '#c98302',
+        alignItems: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         height: 100,
