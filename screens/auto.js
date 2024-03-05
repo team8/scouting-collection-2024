@@ -55,6 +55,7 @@ function Auto(props) {
       title: `Auto | ${matchData.team}`
     })
   }, [])
+
   useEffect(() => {
 
     var heatmapTemp = []
@@ -64,7 +65,7 @@ function Auto(props) {
         heatmapTemp[i].push(0)
       }
     }
-    console.log(heatmapTemp)
+    //console.log(heatmapTemp)
     setHeatmap(heatmapTemp)
   }, [])
 
@@ -109,21 +110,21 @@ function Auto(props) {
   const ScoringButtons = () => {
     return (
       <>
-        <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, }]}
+        <TouchableOpacity style={{borderRadius: 7, padding: 10, marginBottom: 25, marginTop: 30, borderBottomWidth: 5, alignItems: 'center', backgroundColor: alliance, borderColor: allianceBorderColor }}
           onPress={() => {
             setShotModalVisible(!shotModalVisible);
             setModalType('Speaker');
             setShotLocationModalVisible(!shotLocationModalVisible)
           }}>
-          <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Speaker</Text>
+          <Text style={{ fontFamily: 'Helvetica-Light', fontSize: 25, color: 'white', alignSelf: 'center', paddingHorizontal: 175, paddingVertical: 20 }}>Speaker</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
+        <TouchableOpacity style={{ borderRadius: 7, padding: 10, borderBottomWidth: 5, alignItems: 'center', backgroundColor: ampColor, borderColor: ampBorderColor }}
           onPress={() => {
             setModalType('Amp');
             setShotModalVisible(!shotModalVisible);
             setShotLocationModalVisible(!shotLocationModalVisible);
           }}>
-          <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Amp</Text>
+          <Text style={{ fontFamily: 'Helvetica-Light', fontSize: 25, color: 'white', alignSelf: 'center', paddingHorizontal: 175, paddingVertical: 20 }}>Amp</Text>
         </TouchableOpacity>
       </>
     )
@@ -145,7 +146,6 @@ function Auto(props) {
       <ShotLocationModal
         shotLocationModalVisible={shotLocationModalVisible}
         setShotLocationModalVisible={setShotLocationModalVisible}
-        speakerButtonStyle={[autoStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, height: 100 }]}
         ScoringButtons={ScoringButtons}
         coordinatesList={coordinatesList}
         setCoordinatesList={setCoordinatesList}
@@ -168,7 +168,7 @@ function Auto(props) {
 
                   return (
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                      console.log([x, y])
+                      //console.log([x, y])
                       setCoordinatesList([...coordinatesList, [x, y]])
                       setShotLocationModalVisible(!shotLocationModalVisible)
 

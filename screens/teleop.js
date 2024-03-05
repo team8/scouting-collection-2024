@@ -53,6 +53,7 @@ function Teleop(props) {
   }, [])
 
   const [heatmap, setHeatmap] = useState([]);
+
   useEffect(() => {
 
     var heatmapTemp = []
@@ -62,7 +63,7 @@ function Teleop(props) {
         heatmapTemp[i].push(0)
       }
     }
-    console.log(heatmapTemp)
+    //console.log(heatmapTemp)
     setHeatmap(heatmapTemp)
   }, [])
 
@@ -202,7 +203,7 @@ function Teleop(props) {
 
                   return (
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                      console.log([x, y])
+                      //console.log([x, y])
                       setCoordinatesList([...coordinatesList, [x, y]])
                       setShotLocationModalVisible(!shotLocationModalVisible)
 

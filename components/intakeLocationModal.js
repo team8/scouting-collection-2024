@@ -17,15 +17,15 @@ function IntakeLocationModal(props) {
                     <View style={{borderWidth: 0, borderColor: 'red'}}>
                         <Image style={{width: 130, height: 130}} source={require('../assets/game_pieces/note.png')} />
                     </View>
-                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 0, borderColor: 'red' }}>
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                         <TouchableOpacity style={intakeModalStyles.Substation} onPress={() => props.addIntakeLocation('substation')}>
-                            <Text style={intakeModalStyles.ButtonFont}>Single Substation</Text>
+                            <Text style={intakeModalStyles.ButtonFont}>Source Substation</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={intakeModalStyles.GroundSubstation} onPress={() => props.addIntakeLocation('ground')}>
                             <Text style={intakeModalStyles.ButtonFont}>Ground Substation</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 0.5, width: '80%' }}>
+                    <View style={{ flex: 0.5, width: '100%' }}>
                         <TouchableOpacity style={intakeModalStyles.CancelButton} onPress={() => props.setIntakeModalVisible(false)}>
                             <Text style={intakeModalStyles.ButtonFont}>Cancel</Text>
                         </TouchableOpacity>
@@ -70,7 +70,7 @@ const intakeModalStyles = StyleSheet.create({
         width: '100%'
     },
     Substation: {
-        flex: 2,
+        flex: 1,
         backgroundColor: '#e3d214',
         borderRadius: 15,
         borderBottomWidth: 5,
@@ -78,14 +78,14 @@ const intakeModalStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         marginBottom: 10,
-        width: '70%',
-        height: '70%',
-        margin: 10,
+        width: '100%',
+        height: '60%',
+        marginRight: 10,
         alignContent: 'center',
         justifyContent: 'center'
     },
     GroundSubstation: {
-        flex: 2,
+        flex: 1,
         backgroundColor: 'purple',
         borderRadius: 15,
         borderBottomWidth: 5,
@@ -93,9 +93,9 @@ const intakeModalStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         marginBottom: 10,
-        width: '70%',
-        height: '70%',
-        margin: 10,
+        width: '100%',
+        height: '60%',
+        marginLeft: 10,
         alignContent: 'center',
         justifyContent: 'center'
     },
