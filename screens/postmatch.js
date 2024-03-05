@@ -75,7 +75,7 @@ function Postmatch(props) {
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
-                <Text style={[postmatchStyles.Font, {fontSize: 21, flex: 0.143}]}>Climb Notes</Text> {/* these 3 decimal places were with trial & error maybe you can find better way */}
+                <Text style={[postmatchStyles.Font, {fontSize: 21, flex: 0.143}]}>Climb Notes</Text> 
                 <View style={[postmatchStyles.InputContainer, {flex: 0.642}]}>
                     <TextInput
                         style={postmatchStyles.TextInputContainer}
@@ -103,7 +103,7 @@ function Postmatch(props) {
                         value={driverRating}
                         onValueChange={(driverRating) => setDriverRating(driverRating)} 
                     />
-                    <Text>{Math.round(driverRating*5)}</Text>
+                    <Text>{(Math.round(driverRating*5)).toString()}</Text>
                 </View>
                 <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, marginLeft: 5, textAlign: "center"}]}>Defense</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
@@ -112,7 +112,7 @@ function Postmatch(props) {
                         value={defenseRating}
                         onValueChange={(defenseRating) => setDefenseRating(defenseRating)} 
                     />
-                    <Text>{Math.round(defenseRating*6)-1 == -1 ? 'N/a' : Math.round(defenseRating*6)-1}</Text>
+                    <Text>{(Math.round(defenseRating*6)-1 == -1 ? 'N/a' : Math.round(defenseRating*6)-1).toString()}</Text>
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
@@ -122,7 +122,7 @@ function Postmatch(props) {
                         thumbTintColor='#24a2b6'
                         value={intakeRating}
                         onValueChange={(intakeRating) => setIntakeRating(intakeRating)} />
-                    <Text>{Math.round(intakeRating*6)-1 == -1 ? 'N/a' : Math.round(intakeRating*6)-1}</Text>
+                    <Text>{(Math.round(intakeRating*6)-1 == -1 ? 'N/a' : Math.round(intakeRating*6)-1).toString()}</Text>
                 </View>
                 <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, marginLeft: 5, textAlign: "center"}]} textAlign = "center">Climb</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
@@ -130,7 +130,7 @@ function Postmatch(props) {
                         thumbTintColor='#24a2b6'
                         value={climbRating}
                         onValueChange={(intakeRating) => setClimbRating(intakeRating)} />
-                    <Text>{Math.round(climbRating*6)-1 == -1 ? 'N/a' : Math.round(climbRating*6)-1}</Text>
+                    <Text>{(Math.round(climbRating*6)-1 == -1 ? 'N/a' : Math.round(climbRating*6)-1).toString()}</Text>
                 </View>
             </View>
             <View style={[postmatchStyles.Row, {height: 100 }]}>
