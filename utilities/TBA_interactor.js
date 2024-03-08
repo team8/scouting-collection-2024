@@ -6,9 +6,10 @@ export const pullMatches = async (eventKeyInput) => {
     const eventKey = reg[1];
     const alliance = reg[2] === "B" ? "blue" : "red";
     const number = parseInt(reg[3]) - 1;
+    console.log(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches/simple`)
     let data = await axios.get(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches/simple`, {
         headers: {
-            "X-TBA-Auth-Key": "v62ZvFvAkyWVH1qwd1m8Kyyhll0VEvyxUGo7pqpM1re827yjVZlgtjdpBEQJNcn2"
+            "X-TBA-Auth-Key": "fLKsnM61nLrIA7CDpmFybAXvRYFeCQbIRrPYm5sKSSrs77vsUhL2whnLIHizc3iU"
             }
         }
     )
