@@ -11,8 +11,8 @@ function QRCodeScreen(props) {
     const [qrString, setQrString] = useState("");
 
     let matchData = {...props.eventReducer.currentMatchData, 'event': props.eventReducer.currentEvent};
-    console.log(matchData)
-    console.log(JSON.parse(JSON.stringify(encodeStringData(matchData))))
+    //console.log(matchData)
+    //console.log(JSON.parse(JSON.stringify(encodeStringData(matchData))))
     
     const navigation = useNavigation();
 
@@ -26,7 +26,7 @@ function QRCodeScreen(props) {
 
     const encode = () => {
         let codeData = matchData;
-        console.log(matchData);
+        //console.log(matchData);
         let localQrString = encodeStringData(codeData);
         setQrString(localQrString)
     }

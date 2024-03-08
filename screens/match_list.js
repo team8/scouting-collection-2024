@@ -15,7 +15,7 @@ function MatchList(props) {
 
     useEffect(() => {
         getMatches();
-        console.log(props.eventReducer.matches)
+        //console.log(props.eventReducer.matches)
     }, [])
 
     const getMatches = async () => {
@@ -44,7 +44,7 @@ function MatchList(props) {
     }
 
     return (
-        <View>  
+        <View>
             <ScrollView style={{ paddingHorizontal: 20, fontFamily: 'Helvetica-Light' }}>
                 {props.eventReducer.matches &&
                     props.eventReducer.matches.map((match, i) => (
