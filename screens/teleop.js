@@ -12,7 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
 import IntakeLocationModal from '../components/intakeLocationModal';
-import ShotLocationModal from '../components/shotLocationModal';
 
 function Teleop(props) {
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
@@ -27,7 +26,6 @@ function Teleop(props) {
 
   const [shotModalVisible, setShotModalVisible] = useState(false);
   const [intakeModalVisible, setIntakeModalVisible] = useState(false);
-  const [shotLocationModalVisible, setShotLocationModalVisible] = useState(false)
   const [modalType, setModalType] = useState('');
 
   const [teleopActions, setTeleopActions] = useState([]);
@@ -53,6 +51,7 @@ function Teleop(props) {
   }, [])
 
   const [heatmap, setHeatmap] = useState([]);
+
   useEffect(() => {
 
     var heatmapTemp = []
@@ -62,7 +61,7 @@ function Teleop(props) {
         heatmapTemp[i].push(0)
       }
     }
-    console.log(heatmapTemp)
+    //console.log(heatmapTemp)
     setHeatmap(heatmapTemp)
   }, [])
 
@@ -128,32 +127,9 @@ function Teleop(props) {
     setTeleopActions(temp);
   }
 
-  const ScoringButtons = () => {
-    return (
-      <>
-        <TouchableOpacity style={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, }]}
-          onPress={() => {
-            setShotModalVisible(!shotModalVisible);
-            setModalType('Speaker');
-            setShotLocationModalVisible(!shotLocationModalVisible)
-          }}>
-          <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Speaker</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[teleopStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderColor: ampBorderColor }]}
-          onPress={() => {
-            setModalType('Amp');
-            setShotModalVisible(!shotModalVisible);
-            setShotLocationModalVisible(!shotLocationModalVisible);
-          }}>
-          <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Amp</Text>
-        </TouchableOpacity>
-      </>
-    )
-  }
-
-
   return (
     <View style={teleopStyles.mainContainer}>
+
       <IntakeLocationModal
         intakeModalVisible={intakeModalVisible}
         setIntakeModalVisible={setIntakeModalVisible}
@@ -171,16 +147,6 @@ function Teleop(props) {
         setCoordinatesList={setCoordinatesList}
       />
 
-      
-
-      <ShotLocationModal
-        shotLocationModalVisible={shotLocationModalVisible}
-        setShotLocationModalVisible={setShotLocationModalVisible}
-        speakerButtonStyle={[teleopStyles.SpeakerButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor, height: 100 }]}
-        ScoringButtons={ScoringButtons}
-        coordinatesList={coordinatesList}
-        setCoordinatesList={setCoordinatesList}
-      />
 
       {/* <Text style={{alignSelf: (fieldOrientation == 1) ? "flex-start": "flex-end"}}>Test</Text> */}
 
@@ -204,9 +170,10 @@ function Teleop(props) {
 
                   return (
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                      console.log([x, y])
-                      setCoordinatesList([...coordinatesList, [x, y]])
-                      setShotLocationModalVisible(!shotLocationModalVisible)
+                      //console.log([x, y])
+                      setModalType('Speaker');
+                      setCoordinatesList([...coordinatesList, [x, y]]);
+                      setShotModalVisible(!shotModalVisible);
 
                     }}>
                       <Text></Text>
@@ -269,6 +236,13 @@ function Teleop(props) {
           >
             <TouchableOpacity style={[teleopStyles.IntakeButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]} onPress={() => { setIntakeModalVisible(true) }}>
               <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Intake</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[teleopStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
+            setModalType('Amp');
+            setShotModalVisible(!shotModalVisible);
+            }}>
+            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Amp</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
