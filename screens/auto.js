@@ -13,7 +13,6 @@ import Blink from '../components/blink';
 import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
 import ShotSuccessModal from '../components/shotSuccessModal';
-import ShotLocationModal from '../components/shotLocationModal';
 
 
 function Auto(props) {
@@ -27,7 +26,6 @@ function Auto(props) {
 
   const [shotModalVisible, setShotModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
-  const [shotLocationModalVisible, setShotLocationModalVisible] = useState(false)
 
   const [autoActions, setAutoActions] = useState([]);
   const [coordinatesList, setCoordinatesList] = useState([]);
@@ -37,7 +35,6 @@ function Auto(props) {
 
 
   const alliance = props.eventReducer.alliance;
-  const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
   const ampColor = (alliance === 'red') ? '#DA4A19' : '#34BFA1';
   const ampBorderColor = (alliance === 'red') ? '#C03D25' : '#289E85';
 
@@ -82,11 +79,12 @@ function Auto(props) {
   }
 
   const undo = () => {
-    setCoordinatesList(coordinatesList.pop())
     switch (autoActions[autoActions.length - 1]) {
-      case 'autoSpeaker': setSpeakerNotes(speakerNotes - 1); break;
+      case 'autoSpeaker': setSpeakerNotes(speakerNotes - 1); 
+      setCoordinatesList(coordinatesList.pop()); break;
       case 'autoAmp': setAmpNotes(ampNotes - 1); break;
-      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); break;
+      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); 
+      setCoordinatesList(coordinatesList.pop()); break;
       case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
       default: if (autoActions.length != 0) console.log('Wrong autoAction has been undone');
     }
@@ -105,30 +103,8 @@ function Auto(props) {
       case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
       default: console.log('Invalid action added in auto');
     }
-    setAutoActions(temp);
-  }
 
-  const ScoringButtons = () => {
-    return (
-      <>
-        <TouchableOpacity style={{borderRadius: 7, padding: 10, marginBottom: 25, marginTop: 30, borderBottomWidth: 5, alignItems: 'center', backgroundColor: alliance, borderColor: allianceBorderColor }}
-          onPress={() => {
-            setShotModalVisible(!shotModalVisible);
-            setModalType('Speaker');
-            setShotLocationModalVisible(!shotLocationModalVisible)
-          }}>
-          <Text style={{ fontFamily: 'Helvetica-Light', fontSize: 25, color: 'white', alignSelf: 'center', paddingHorizontal: 175, paddingVertical: 20 }}>Speaker</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ borderRadius: 7, padding: 10, borderBottomWidth: 5, alignItems: 'center', backgroundColor: ampColor, borderColor: ampBorderColor }}
-          onPress={() => {
-            setModalType('Amp');
-            setShotModalVisible(!shotModalVisible);
-            setShotLocationModalVisible(!shotLocationModalVisible);
-          }}>
-          <Text style={{ fontFamily: 'Helvetica-Light', fontSize: 25, color: 'white', alignSelf: 'center', paddingHorizontal: 175, paddingVertical: 20 }}>Amp</Text>
-        </TouchableOpacity>
-      </>
-    )
+    setAutoActions(temp);
   }
 
   return (
@@ -142,15 +118,6 @@ function Auto(props) {
         addAction={addAction}
         coordinatesList={coordinatesList}
         setCoordinatesList={setCoordinatesList}
-      />
-
-      <ShotLocationModal
-        shotLocationModalVisible={shotLocationModalVisible}
-        setShotLocationModalVisible={setShotLocationModalVisible}
-        ScoringButtons={ScoringButtons}
-        coordinatesList={coordinatesList}
-        setCoordinatesList={setCoordinatesList}
-
       />
 
       <ImageBackground
@@ -170,8 +137,9 @@ function Auto(props) {
                   return (
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
                       //console.log([x, y])
+                      setModalType('Speaker')
                       setCoordinatesList([...coordinatesList, [x, y]])
-                      setShotLocationModalVisible(!shotLocationModalVisible)
+                      setShotModalVisible(!shotModalVisible);
 
                     }}>
                       <Text></Text>
@@ -230,9 +198,17 @@ function Auto(props) {
           }}
         >
           
+          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
+            setModalType('Amp');
+            setShotModalVisible(!shotModalVisible);
+          }}>
+            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Amp</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
           </TouchableOpacity>
+          
           <TouchableOpacity style={[autoStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
             <Blink text='Continue to Teleop' />
           </TouchableOpacity>
