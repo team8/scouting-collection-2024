@@ -47,6 +47,7 @@ function Auto(props) {
 
 
 
+
   useEffect(() => {
     navigation.setOptions({
       title: `Auto | ${matchData.team}`
@@ -55,14 +56,13 @@ function Auto(props) {
 
   useEffect(() => {
 
-    var heatmapTemp = []
-    for (var i = 0; i < 10; i++) {
+    let heatmapTemp = []
+    for (let i = 0; i < 10; i++) {
       heatmapTemp.push([])
-      for (var j = 0; j < 10; j++) {
+      for (let j = 0; j < 10; j++) {
         heatmapTemp[i].push(0)
       }
     }
-    //console.log(heatmapTemp)
     setHeatmap(heatmapTemp)
   }, [])
 
@@ -91,7 +91,9 @@ function Auto(props) {
       default: if (autoActions.length != 0) console.log('Wrong autoAction has been undone');
     }
 
-    autoActions.pop();
+    let temp = autoActions;
+    temp.splice(autoActions.length-1, 1)
+    setAutoActions(temp);
   }
 
   const addAction = (action) => {
@@ -138,7 +140,6 @@ function Auto(props) {
 
                   return (
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                      //console.log([x, y])
                       setModalType('Speaker')
                       let temp = coordinatesList;
                       temp[coordinatesList.length] = [x, y];
@@ -219,8 +220,6 @@ function Auto(props) {
 
         </View>
       </View>
-
-
     </View>
   );
 }

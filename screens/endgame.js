@@ -31,10 +31,12 @@ function Endgame(props) {
         switch(endgameActions[endgameActions.length-1]) {
             case 'trap': setTraps(traps-1); break;
             case 'failedTrap': setFailedTraps(failedTraps-1); break;
-            default: console.log('Invalid action undone in endgame');
+            default: if(endgameActions.length != 0 ) console.log('Invalid action undone in endgame');
         }
 
-        endgameActions.pop();
+        let temp = endgameActions;
+        temp.splice(endgameActions.length-1, 1)
+        setEndgameActions(temp);
         // props.setCurrentMatchData(localMatchData);
     }
 

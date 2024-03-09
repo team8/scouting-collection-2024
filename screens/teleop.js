@@ -54,14 +54,13 @@ function Teleop(props) {
 
   useEffect(() => {
 
-    var heatmapTemp = []
-    for (var i = 0; i < 10; i++) {
+    let heatmapTemp = []
+    for (let i = 0; i < 10; i++) {
       heatmapTemp.push([])
-      for (var j = 0; j < 10; j++) {
+      for (let j = 0; j < 10; j++) {
         heatmapTemp[i].push(0)
       }
     }
-    //console.log(heatmapTemp)
     setHeatmap(heatmapTemp)
   }, [])
 
@@ -96,8 +95,9 @@ function Teleop(props) {
       default: if (teleopActions.length != 0) console.log('Wrong teleopAction has been undone');
     }
     
-    teleopActions.pop();
-    
+    let temp = teleopActions;
+    temp.splice(teleopActions.length-1, 1)
+    setTeleopActions(temp);
   }
 
   const addIntakeLocation = (location) => {
@@ -174,7 +174,6 @@ function Teleop(props) {
 
                   return (
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                      //console.log([x, y])
                       setModalType('Speaker');
                       let temp = coordinatesList;
                       temp[coordinatesList.length] = [x, y];
