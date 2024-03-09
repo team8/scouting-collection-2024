@@ -82,20 +82,22 @@ function Teleop(props) {
   }
 
   const undo = () => {
-    setCoordinatesList(coordinatesList.pop())
+    if(teleopActions.length == 0) return;
 
-    if (teleopActions.length != 0)
-      switch (teleopActions[teleopActions.length - 1]) {
-        case 'teleopSpeaker': setSpeakerNotes(speakerNotes - 1); break;
-        case 'teleopAmp': setAmpNotes(ampNotes - 1); break;
-        case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); break;
-        case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
-        case 'groundIntake': setGroundIntakes(groundIntakes - 1); break;
-        case 'substationIntake': setSubstationIntakes(substationIntakes - 1); break;
-        default: if (teleopActions.length != 0) console.log('Wrong teleopAction has been undone');
-      }
-
+    switch (teleopActions[teleopActions.length - 1]) {
+      case 'teleopSpeaker': setSpeakerNotes(speakerNotes - 1); 
+      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
+      case 'teleopAmp': setAmpNotes(ampNotes - 1); break;
+      case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); 
+      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
+      case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
+      case 'groundIntake': setGroundIntakes(groundIntakes - 1); break;
+      case 'substationIntake': setSubstationIntakes(substationIntakes - 1); break;
+      default: if (teleopActions.length != 0) console.log('Wrong teleopAction has been undone');
+    }
+    
     teleopActions.pop();
+    
   }
 
   const addIntakeLocation = (location) => {
@@ -109,7 +111,9 @@ function Teleop(props) {
     // props.setCurrentMatchData(localMatchData);
     setIntakeModalVisible(false);
 
-    setTeleopActions([...teleopActions, location + "Intake"]);
+    let temp = teleopActions;
+    temp.push(location + "Intake");
+    setTeleopActions(temp);;
   }
 
   const addAction = (action) => {
@@ -172,7 +176,9 @@ function Teleop(props) {
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
                       //console.log([x, y])
                       setModalType('Speaker');
-                      setCoordinatesList([...coordinatesList, [x, y]]);
+                      let temp = coordinatesList;
+                      temp[coordinatesList.length] = [x, y];
+                      setCoordinatesList(temp);
                       setShotModalVisible(!shotModalVisible);
 
                     }}>

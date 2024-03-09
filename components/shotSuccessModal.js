@@ -21,11 +21,11 @@ function ShotSuccessModal(props) {
 
           <TouchableOpacity style={{ backgroundColor: '#e83149', height: 45, width: 45, borderRadius: 40, alignSelf: 'flex-start', justifyContent: 'center' }} 
             onPress={() => { 
-              var temp = props.coordinatesList
-              temp.pop()
-              props.setCoordinatesList(temp)
+              var temp = props.coordinatesList;
+              temp.splice(props.coordinatesList.length-1, 1);
+              props.setCoordinatesList(temp);
               
-              props.setShotModalVisible(!props.shotModalVisible)
+              props.setShotModalVisible(!props.shotModalVisible);
               }}>
             <Text style={{ alignSelf: 'center', color: 'white', fontSize: 20 }}>X</Text>
           </TouchableOpacity>

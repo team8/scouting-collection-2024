@@ -79,12 +79,14 @@ function Auto(props) {
   }
 
   const undo = () => {
+    if(autoActions.length == 0) return;
+
     switch (autoActions[autoActions.length - 1]) {
       case 'autoSpeaker': setSpeakerNotes(speakerNotes - 1); 
-      setCoordinatesList(coordinatesList.pop()); break;
+      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
       case 'autoAmp': setAmpNotes(ampNotes - 1); break;
       case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); 
-      setCoordinatesList(coordinatesList.pop()); break;
+      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
       case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
       default: if (autoActions.length != 0) console.log('Wrong autoAction has been undone');
     }
@@ -138,7 +140,9 @@ function Auto(props) {
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
                       //console.log([x, y])
                       setModalType('Speaker')
-                      setCoordinatesList([...coordinatesList, [x, y]])
+                      let temp = coordinatesList;
+                      temp[coordinatesList.length] = [x, y];
+                      setCoordinatesList(temp);
                       setShotModalVisible(!shotModalVisible);
 
                     }}>
