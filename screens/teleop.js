@@ -217,8 +217,8 @@ function Teleop(props) {
 
 
             <View style={{ flex: 0.3, marginTop: 40, margin: 10, borderColor: 'blue', borderWidth: 0, alignItems: 'center' }}>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes}</Text>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes}</Text>
+              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes + matchData.autoFailedSpeakerNotes}</Text>
+              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes + matchData.autoFailedAmpNotes}</Text>
             </View>
             <View style={{ flex: 0.3, alignItems: 'center' }}>
               <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes + matchData.autoSpeakerNotes}</Text>
