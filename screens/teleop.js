@@ -144,6 +144,7 @@ function Teleop(props) {
         shotModalVisible={shotModalVisible}
         setShotModalVisible={setShotModalVisible}
         matchPhase='teleop' modalType={modalType}
+        fieldOrientation={fieldOrientation}
         teleopActions={teleopActions}
         setTeleopActions={setTeleopActions}
         addAction={addAction}
@@ -176,7 +177,10 @@ function Teleop(props) {
                     <TouchableOpacity style={{ width: "10%", }} onPress={() => {
                       setModalType('Speaker'); //This is redundant but eh whatever
                       let temp = coordinatesList;
-                      temp[coordinatesList.length] = [x, y];
+
+                      if(fieldOrientation == 1) temp[coordinatesList.length] = [9-x, 9-y]; //Make coordinates consistent regardless of field orientation
+                      else if(fieldOrientation == 2) temp[coordinatesList.length] = [x, y];
+
                       setCoordinatesList(temp);
                       setShotModalVisible(!shotModalVisible);
 

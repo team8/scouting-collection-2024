@@ -1,11 +1,19 @@
 import { Modal, View, TouchableOpacity, Text, Image } from 'react-native';
 
-function headerText(coordinatesList, modalType) {
+function headerText(coordinatesList, modalType, fieldOrientation) {
   if (modalType == 'Speaker') try {
-    return 'Speaker: [' + 
-    coordinatesList[coordinatesList.length-1][0] + ', ' +
-    (9-coordinatesList[coordinatesList.length-1][1]) + ']';
+
+    if(fieldOrientation == 1) 
+      return 'Speaker: [' + 
+      (9-coordinatesList[coordinatesList.length-1][0]) + ', ' +
+      coordinatesList[coordinatesList.length-1][1] + ']';
+    else if (fieldOrientation == 2)
+      return 'Speaker: [' + 
+      coordinatesList[coordinatesList.length-1][0] + ', ' +
+      (9-coordinatesList[coordinatesList.length-1][1]) + ']';
+
   } catch(err) {
+    console.log(err);
     return 'Speaker';
   }
   else if (modalType == 'Amp') return 'Amp';
@@ -32,7 +40,12 @@ function ShotSuccessModal(props) {
           {/* Button to close modal */}
 
           <Text style={{ fontFamily: 'Helvetica-Light', fontSize: 35, alignSelf: 'center', paddingHorizontal: 150, paddingVertical: 20, marginBottom: 15 }}>
-          {headerText(props.coordinatesList, props.modalType)}</Text>
+          {headerText(props.coordinatesList, props.modalType, props.fieldOrientation)}</Text>
+          {/* headerText is used to give the user a more intuitive coordinate shown. (0, 0 at bottom left)
+              While the value shown in the modal is different than the actual values saved,
+              the actual coordinates saved to matchData are still the same regardless.
+              This is purely visual.
+           */}
 
           <Image style={{ height: 175, width: 175, marginBottom: 10 }} source={require('../assets/game_pieces/note.png')} />
 

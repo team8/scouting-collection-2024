@@ -57,12 +57,14 @@ function Auto(props) {
   useEffect(() => {
 
     let heatmapTemp = []
+
     for (let i = 0; i < 10; i++) {
       heatmapTemp.push([])
       for (let j = 0; j < 10; j++) {
         heatmapTemp[i].push(0)
       }
     }
+
     setHeatmap(heatmapTemp)
   }, [])
 
@@ -118,6 +120,7 @@ function Auto(props) {
         shotModalVisible={shotModalVisible}
         setShotModalVisible={setShotModalVisible}
         matchPhase='auto' modalType={modalType}
+        fieldOrientation={fieldOrientation}
         autoActions={autoActions}
         addAction={addAction}
         coordinatesList={coordinatesList}
@@ -142,7 +145,10 @@ function Auto(props) {
                     <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
                       setModalType('Speaker')
                       let temp = coordinatesList;
-                      temp[coordinatesList.length] = [x, y];
+                       
+                      if(fieldOrientation == 1) temp[coordinatesList.length] = [9-x, 9-y]; //Make coordinates consistent regardless of field orientation
+                      else if(fieldOrientation == 2) temp[coordinatesList.length] = [x, y];
+
                       setCoordinatesList(temp);
                       setShotModalVisible(!shotModalVisible);
 
