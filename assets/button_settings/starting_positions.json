@@ -1,22 +1,22 @@
 {
     "one_red": [
-        {"id": 1, "left": 305, "top": 454, "paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
-        {"id": 2, "left": 305, "top": 215, "paddingRight": 20, "padding": 114, "name": "middle"},
-        {"id": 3, "left": 305, "top": 54, "paddingLeft": 35, "paddingRight": 100, "padding": 67, "name": "outside"}
+        {"left": 305, "top": 454, "paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
+        {"left": 305, "top": 215, "paddingRight": 20, "padding": 114, "name": "middle"},
+        {"left": 305, "top": 54, "paddingLeft": 35, "paddingRight": 100, "padding": 67, "name": "outside"}
     ],
     "two_red": [
-        {"id": 1, "left": 45, "top": 454, "paddingLeft": 60, "paddingRight": 80, "padding": 80, "name": "inside"},
-        {"id": 2, "left": 45, "top": 215, "paddingRight": 25, "padding": 115, "name": "middle"},
-        {"id": 3, "left": 45, "top": 75, "paddingLeft": 40, "paddingRight": 100, "padding": 70, "name": "outside"}
+        {"left": 45, "top": 454, "paddingLeft": 60, "paddingRight": 80, "padding": 80, "name": "outside"},
+        {"left": 45, "top": 215, "paddingRight": 25, "padding": 115, "name": "middle"},
+        {"left": 45, "top": 75, "paddingLeft": 40, "paddingRight": 100, "padding": 70, "name": "inside"}
     ],
     "one_blue": [
-        {"id": 1, "left": 305, "top": 454,"paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
-        {"id": 2, "left": 305, "top": 215, "paddingRight": 20, "padding": 114, "name": "middle"},
-        {"id": 3, "left": 305, "top": 75, "paddingLeft": 35, "paddingRight": 100, "padding": 67, "name": "outside"}
+        {"left": 305, "top": 454,"paddingLeft": 35, "paddingRight": 100, "padding": 80, "name": "inside"},
+        {"left": 305, "top": 215, "paddingRight": 20, "padding": 114, "name": "middle"},
+        {"left": 305, "top": 75, "paddingLeft": 35, "paddingRight": 100, "padding": 67, "name": "outside"}
     ],
     "two_blue": [
-        {"id": 1, "left": 45, "top": 454, "paddingRight": 60 ,"padding": 80, "name": "inside"},
-        {"id": 2, "left": 45, "top": 215, "paddingRight": 25, "padding": 115, "name": "middle"},
-        {"id": 3, "left": 45, "top": 75, "paddingLeft": 40, "paddingRight": 100, "padding": 70, "name": "outside"}
+        {"left": 45, "top": 454, "paddingRight": 60 ,"padding": 80, "name": "outside"},
+        {"left": 45, "top": 215, "paddingRight": 25, "padding": 115, "name": "middle"},
+        {"left": 45, "top": 75, "paddingLeft": 40, "paddingRight": 100, "padding": 70, "name": "inside"}
     ]
 }
