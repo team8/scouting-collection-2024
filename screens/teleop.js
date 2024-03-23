@@ -173,8 +173,8 @@ function Teleop(props) {
                 {heatmap[y] && [...Array(heatmap[y].length).keys()].map((x) => {
 
                   return (
-                    <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                      setModalType('Speaker');
+                    <TouchableOpacity style={{ width: "10%", }} onPress={() => {
+                      setModalType('Speaker'); //This is redundant but eh whatever
                       let temp = coordinatesList;
                       temp[coordinatesList.length] = [x, y];
                       setCoordinatesList(temp);
@@ -211,20 +211,18 @@ function Teleop(props) {
               flex: 1,
               alignItems: 'center',
               justifyContent: 'center',
-
             }}
           >
 
-
-            <View style={{ flex: 0.3, marginTop: 40, margin: 10, borderColor: 'blue', borderWidth: 0, alignItems: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', paddingVertical: 20 }}>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes + matchData.autoFailedSpeakerNotes}</Text>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes + matchData.autoFailedAmpNotes}</Text>
             </View>
-            <View style={{ flex: 0.3, alignItems: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', paddingVertical: 20 }}>
               <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes + matchData.autoSpeakerNotes}</Text>
               <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes + matchData.autoAmpNotes}</Text>
             </View>
-            <View style={{ flex: 0.3, alignItems: 'center', borderColor: "red", borderWidth: 0 }}>
+            <View style={{ flex: 1, alignItems: 'center', paddingVertical: 20 }}>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
               <Text style={{ fontSize: 20 }}>Substation Intakes: {substationIntakes}</Text>
             </View>
@@ -232,23 +230,29 @@ function Teleop(props) {
 
           <View
             style={{
-              flex: 0.8,
+              flex: 1.4,
               alignItems: 'center',
               justifyContent: 'center',
               paddingBottom: 10,
-
+              paddingHorizontal: 19
             }}
           >
             <TouchableOpacity style={[teleopStyles.IntakeButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]} onPress={() => { setIntakeModalVisible(true) }}>
               <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Intake</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[teleopStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
-            setModalType('Amp');
-            setShotModalVisible(!shotModalVisible);
-            }}>
-            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Amp</Text>
-            </TouchableOpacity>
+            <View style={{flex: 1.5, flexDirection: "row"}}>
+              <TouchableOpacity style={[teleopStyles.AmpButton, { marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
+              addAction("teleopAmp");
+              }}>
+              <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: "center"}]}>{"Success.\nAmp"}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[teleopStyles.AmpButton, { marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
+              addAction("teleopFailedAmp");
+              }}>
+              <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: "center"}]}>{"Failed\nAmp"}</Text>
+              </TouchableOpacity>
+            </View>
 
             <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
               <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
@@ -318,6 +322,7 @@ function Teleop(props) {
       borderBottomWidth: 5,
       alignItems: 'center',
       justifyContent: 'center',
+      marginHorizontal: 10
   },
     IntakeButton: {
       flex: 1,
